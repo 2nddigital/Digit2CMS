@@ -13,11 +13,17 @@ Digit2 CMS is a modular flat-file CMS built using Node.js.
 
 ### Project Structure file
 
-A project is structured in a tree consisting of modules. Each element in the tree has a unique id that is based on its position in the tree starting from the Root module (id: 0). The id '0$3$0$2' means that the module is located in the third subtree of the first container of the fourth subtree in the first container of the Root module. 
+A project is structured in a tree consisting of modules. Each element in the tree has a unique id that is based on its position in the tree starting from the Root module (id: 0). The id '0$3$0$2' means that the module is located in the third subtree of the first container of the fourth subtree in the first container of the Root module.
 
 #### Compiling:
 
 Compiling is done using an inorder tree walk algorithm on the project tree. The output is sent to an output file (usually html).
+
+##### Compiler steps:
+- Read project file, initialize Module objects + assign module IDs
+- Walk 1: Perform module operations (execute module scripts, etc.)
+- Walk 2: Execute pre-render on each module, system render
+- Output
 
 ### Modules
 
