@@ -1,6 +1,7 @@
 {
   "script": "listitem.js",
   "content": "listitem.data",
+  "extends": "block",
   "properties": [
     {
       "name": "image",
@@ -14,5 +15,11 @@
       "name": "height",
       "type": "dimension"
     },
+  ],
+  "constants": [
+    {
+      "name": "name",
+      "value": "listitem"
+    }
   ]
 }
