@@ -1,0 +1,18 @@
+{
+  "script": "listitem.js",
+  "content": "listitem.data",
+  "properties": [
+    {
+      "name": "image",
+      "type": "url"
+    },
+    {
+      "name": "description",
+      "type": "inline-text"
+    },
+    {
+      "name": "height",
+      "type": "dimension"
+    },
+  ]
+}
