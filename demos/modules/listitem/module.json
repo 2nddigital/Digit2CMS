@@ -21,5 +21,6 @@
       "name": "name",
       "value": "listitem"
     }
-  ]
+  ],
+  "containers": ["content"]
 }

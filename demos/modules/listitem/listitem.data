@@ -1,4 +1,4 @@
 <li class="module-listitem" height="{height}">
 <img src="{image}" alt="{description}" />
-<span class="module-listitem-content">[container name="content" count="1" supports="text"]</span>
+<span class="module-listitem-content">[container id="content" count="1" supports="text"]</span>
 </li>
