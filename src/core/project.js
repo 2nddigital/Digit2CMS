@@ -1,8 +1,13 @@
-module.exports = function(projectObject){
+function Project(projectObject){
   var self = this;
-  var projectTree = null;
-
-
 
   return this;
+}
+
+Project.prototype.projectTree = null;
+
+Project.prototype.export = function(){
+  //export tree per layer
 };
+
+module.exports = Project;
