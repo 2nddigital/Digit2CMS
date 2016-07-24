@@ -22,5 +22,11 @@
       "value": "listitem"
     }
   ],
-  "containers": ["content"]
+  "containers": [
+    {
+      "id": "content",
+      "supports": ["text"],
+      "size": 0
+    }
+  ]
 }
