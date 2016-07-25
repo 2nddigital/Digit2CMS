@@ -23,6 +23,14 @@ Module.prototype.addChild = function(containerId, childModule){
   }
 };
 
+Module.prototype.addChildAt = function(containerId, index, childModule){
+  if(childModule instanceof Module){
+    if(typeof(this.containers[containerId]) !== 'undefined' && (this.containers[containerId] instanceof this.Container)){
+      this.containers[containerId].addChildAt(index, childModule);
+    }
+  }
+}
+
 Module.prototype.getContainer = function(containerId){
   return (typeof(this.containers[containerId]) !== 'undefined') ? this.containers[containerId] : null;
 };

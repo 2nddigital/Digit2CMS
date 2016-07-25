@@ -14,4 +14,10 @@ Container.prototype.addChild = function(childModule){
   }
 };
 
+Container.prototype.addChildAt = function(index, childModule){
+  if(childModule instanceof this.Module){
+    this.modules[index] = childModule;
+  }
+};
+
 module.exports = Container;
