@@ -1,7 +1,7 @@
 Object.prototype.extend = function(ext){
-  for(var i in obj){
-    if(obj.hasOwnProperty(i)){
-      this[i] = obj[i];
+  for(var i in ext){
+    if(ext.hasOwnProperty(i)){
+      this[i] = ext[i];
     }
   }
 };
