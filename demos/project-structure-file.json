@@ -1,17 +1,22 @@
-"0": {
-  "module": "root",
-  "properties": [],
-  "children": {
-    "content": ["0-content-0", "0-content-1"]
+{
+  "0": {
+    "module": "root",
+    "properties": [],
+    "child_containers": ["content"],
+    "children": {
+      "content": ["0-content-0", "0-content-1"]
+    }
+  },
+  "0-content-0": {
+    "module": "text",
+    "properties": [],
+    "child_containers": [],
+    "children": {}
+  },
+  "0-content-1": {
+    "module": "text",
+    "properties": [],
+    "child_containers": [],
+    "children": {}
   }
-},
-"0-content-0": {
-  "module": "text",
-  "properties": [],
-  "children": {}
-},
-"0-content-1": {
-  "module": "text",
-  "properties": [],
-  "children": {}
 }
