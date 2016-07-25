@@ -1,6 +1,17 @@
-{
-  "0$0": {
-    "module": "listitem",
-    "properties": []
+"0": {
+  "module": "root",
+  "properties": [],
+  "children": {
+    "content": ["0-content-0", "0-content-1"]
   }
+},
+"0-content-0": {
+  "module": "text",
+  "properties": [],
+  "children": {}
+},
+"0-content-1": {
+  "module": "text",
+  "properties": [],
+  "children": {}
 }
