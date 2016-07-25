@@ -18,7 +18,12 @@ var projectObject = {
   },
   "0-content-1": {
     "module": "text",
-    "properties": [],
+    "properties": [
+      {
+        "name": "content",
+        "value": "test"
+      }
+    ],
     "child_containers": [],
     "children": {}
   }
