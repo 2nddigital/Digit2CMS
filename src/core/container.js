@@ -1,7 +1,11 @@
 function Container(containerObject){
   var self = this;
   this.Module = require("./module.js");
-  this.containerProperties = containerObject;
+  this.containerProperties = {
+    "id": null,
+    "supports": null,
+    "size": 0
+  }.extend(containerObject);
   this.modules = [];
 
   return this;

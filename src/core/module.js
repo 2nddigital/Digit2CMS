@@ -3,6 +3,17 @@ function Module(moduleObject){
   this.Container = require("./container.js");
   this.containers = {};
   this.properties = {};
+  this.propertylist = [];
+
+  moduleObject.properties.forEach(function(elem){
+    self.propertylist.push(elem.name);
+    self.properties[elem.name] = {
+      "name": null,
+      "type": null,
+      "value": null
+    }.extend(elem);
+  });
+
   // Load containers from moduleObject into containers object
   if(typeof(moduleObject.containers) !== 'undefined' && Array.isArray(moduleObject.containers)){
     moduleObject.containers.forEach(function(containerObject){
@@ -14,6 +25,17 @@ function Module(moduleObject){
 
   return this;
 }
+
+Module.prototype.initializeProperties = function(properties){
+  var self = this;
+  properties.forEach(function(property){
+    if(typeof(self.properties[property.name]) !== 'undefined'){
+      self.properties[property.name].extend(property);
+    }else{
+      self.properties[property.name] = property;
+    }
+  });
+};
 
 Module.prototype.addChild = function(containerId, childModule){
   if(childModule instanceof Module){
