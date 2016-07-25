@@ -1,10 +1,9 @@
 function Project(projectObject){
   var self = this;
+  this.projectTree = null;
 
   return this;
 }
-
-Project.prototype.projectTree = null;
 
 Project.prototype.export = function(){
   //export tree per layer
