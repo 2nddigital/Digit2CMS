@@ -1,22 +1,32 @@
 function Module(moduleObject){
+  var extendedModuleObject = {
+    "script": null,
+    "content": null,
+    "extends": null,
+    "properties": [],
+    "containers": []
+  }.extend(moduleObject);
+
   var self = this;
   this.Container = require("./container.js");
   this.containers = {};
   this.properties = {};
   this.propertylist = [];
+  this.content = "deze demo is slechts {test} een demonstratie {boe} voor een demo";
 
-  moduleObject.properties.forEach(function(elem){
+  extendedModuleObject.properties.forEach(function(elem){
     self.propertylist.push(elem.name);
     self.properties[elem.name] = {
       "name": null,
       "type": null,
-      "value": null
+      "value": null,
+      "readonly": false
     }.extend(elem);
   });
 
   // Load containers from moduleObject into containers object
-  if(typeof(moduleObject.containers) !== 'undefined' && Array.isArray(moduleObject.containers)){
-    moduleObject.containers.forEach(function(containerObject){
+  if(typeof(extendedModuleObject.containers) !== 'undefined' && Array.isArray(extendedModuleObject.containers)){
+    extendedModuleObject.containers.forEach(function(containerObject){
       if(typeof(containerObject.id) !== 'undefined'){
         self.containers[containerObject.id] = new self.Container(containerObject);
       }
@@ -51,7 +61,7 @@ Module.prototype.addChildAt = function(containerId, index, childModule){
       this.containers[containerId].addChildAt(index, childModule);
     }
   }
-}
+};
 
 Module.prototype.getContainer = function(containerId){
   return (typeof(this.containers[containerId]) !== 'undefined') ? this.containers[containerId] : null;
@@ -59,6 +69,19 @@ Module.prototype.getContainer = function(containerId){
 
 Module.prototype.export = function(){
 
+};
+
+Module.prototype.propertyLookup = function(propertyName){
+  console.log(propertyName);
+  return "--fillin--";
+};
+
+Module.prototype.render = function(){
+  //demo for property rendering
+  var self = this;
+  return this.content.replace(/{(\S+)}/g, function(totalMatch, groupMatch){
+    return self.propertyLookup(groupMatch);
+  });
 };
 
 module.exports = Module;

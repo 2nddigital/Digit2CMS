@@ -24,4 +24,14 @@ Container.prototype.addChildAt = function(index, childModule){
   }
 };
 
+Container.prototype.export = function(){};
+
+Container.prototype.render = function(){
+  var result = "";
+  this.modules.forEach(function(module){
+    result += module.render();
+  });
+  return result;
+};
+
 module.exports = Container;

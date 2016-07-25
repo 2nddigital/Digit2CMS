@@ -26,3 +26,4 @@ var projectObject = {
 
 var mainProject = new core.Project(projectObject);
 mainProject.initialize();
+console.log(mainProject.render());

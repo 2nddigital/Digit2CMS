@@ -4,4 +4,5 @@ Object.prototype.extend = function(ext){
       this[i] = ext[i];
     }
   }
+  return this;
 };

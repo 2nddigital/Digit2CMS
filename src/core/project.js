@@ -35,8 +35,11 @@ Project.prototype.buildSubtree = function(moduleId){
   var modulePath = _path.join(_path.join("../modules", moduleSettings.module), "module.json");
   console.log(modulePath);
   var moduleObject = require(modulePath);
-  //TODO: extend module object with settings from project file
   var currentNode = new this.Module(moduleObject);
+  currentNode.initializeProperties(currentNode.propertylist.map(function(propertyName){
+    return currentNode.properties[propertyName];
+  }));
+  currentNode.initializeProperties(moduleSettings.properties);
 
   moduleSettings.child_containers.forEach(function(containerId){
     _async.parallel(moduleSettings.children[containerId].map(function(child, index){
@@ -52,6 +55,10 @@ Project.prototype.buildSubtree = function(moduleId){
   });
 
   return currentNode;
+};
+
+Project.prototype.render = function(){
+  return this.projectTree.render();
 };
 
 module.exports = Project;
