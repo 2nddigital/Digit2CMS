@@ -1,5 +1,9 @@
+var _path = require("path");
+var _fs = require("fs");
+
 function Module(moduleObject){
   var extendedModuleObject = {
+    "name": null,
     "script": null,
     "content": null,
     "extends": null,
@@ -12,7 +16,9 @@ function Module(moduleObject){
   this.containers = {};
   this.properties = {};
   this.propertylist = [];
-  this.content = "deze demo is slechts {test} een demonstratie {boe} voor een demo";
+  var contentPath = _path.join(__dirname, _path.join(_path.join("../modules", extendedModuleObject.name), extendedModuleObject.content));
+  this.content = _fs.readFileSync(contentPath, 'UTF-8');
+  console.log(this.content);
 
   extendedModuleObject.properties.forEach(function(elem){
     self.propertylist.push(elem.name);
@@ -72,15 +78,20 @@ Module.prototype.export = function(){
 };
 
 Module.prototype.propertyLookup = function(propertyName){
-  console.log(propertyName);
-  return "--fillin--";
+  return this.properties[propertyName];
 };
 
 Module.prototype.render = function(){
   //demo for property rendering
   var self = this;
-  return this.content.replace(/{(\S+)}/g, function(totalMatch, groupMatch){
-    return self.propertyLookup(groupMatch);
+  return this.content.replace(/{(\S+)}/g, function(totalMatch, property){
+    return self.propertyLookup(property).value;
+  }).replace(/\/\/(\S+)\\\\/g, function(totalMatch, container){
+    if(typeof(self.containers[container]) !== 'undefined' && self.containers[container] !== null){
+      return self.containers[container].render();
+    }else{
+      return "";
+    }
   });
 };
 
