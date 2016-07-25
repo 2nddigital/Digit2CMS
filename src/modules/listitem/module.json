@@ -1,4 +1,5 @@
 {
+  "name": "listitem",
   "script": "listitem.js",
   "content": "listitem.data",
   "extends": "block",

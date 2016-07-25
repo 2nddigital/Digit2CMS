@@ -4,7 +4,12 @@ var core = require("./core/core.js");
 var projectObject = {
   "0": {
     "module": "root",
-    "properties": [],
+    "properties": [
+      {
+        "name": "content",
+        "value": "test"
+      }
+    ],
     "child_containers": ["content"],
     "children": {
       "content": ["0-content-0", "0-content-1"]
@@ -18,12 +23,7 @@ var projectObject = {
   },
   "0-content-1": {
     "module": "text",
-    "properties": [
-      {
-        "name": "content",
-        "value": "test"
-      }
-    ],
+    "properties": [],
     "child_containers": [],
     "children": {}
   }

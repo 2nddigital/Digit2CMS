@@ -16,9 +16,10 @@ function Module(moduleObject){
   this.containers = {};
   this.properties = {};
   this.propertylist = [];
-  var contentPath = _path.join(__dirname, _path.join(_path.join("../modules", extendedModuleObject.name), extendedModuleObject.content));
-  this.content = _fs.readFileSync(contentPath, 'UTF-8');
-  console.log(this.content);
+  this.name = null;
+
+  this.content = null;
+  this.contentFile = extendedModuleObject.content;
 
   extendedModuleObject.properties.forEach(function(elem){
     self.propertylist.push(elem.name);
@@ -26,7 +27,8 @@ function Module(moduleObject){
       "name": null,
       "type": null,
       "value": null,
-      "readonly": false
+      "readonly": false,
+      "inherited": false
     }.extend(elem);
   });
 
@@ -42,13 +44,23 @@ function Module(moduleObject){
   return this;
 }
 
-Module.prototype.initializeProperties = function(properties){
+Module.prototype.initializeProperties = function(properties, inherited){
+  if(typeof(inherited) === 'undefined'){
+    inherited = false;
+  }
   var self = this;
   properties.forEach(function(property){
     if(typeof(self.properties[property.name]) !== 'undefined'){
-      self.properties[property.name].extend(property);
+      self.properties[property.name].extend(property).inherited = inherited;
     }else{
-      self.properties[property.name] = property;
+      self.properties[property.name] = {
+        "name": null,
+        "type": null,
+        "value": null,
+        "readonly": false,
+        "inherited": false
+      }.extend(property);
+      self.properties[property.name].inherited = inherited
     }
   });
 };
@@ -78,12 +90,18 @@ Module.prototype.export = function(){
 };
 
 Module.prototype.propertyLookup = function(propertyName){
+  console.log(propertyName + ":");
+  console.log(this.properties[propertyName]);
   return this.properties[propertyName];
 };
 
 Module.prototype.render = function(){
   //demo for property rendering
   var self = this;
+
+  this.contentFile = _path.join(__dirname, _path.join(_path.join("../modules", this.name), this.contentFile));
+  this.content = _fs.readFileSync(this.contentFile, 'UTF-8');
+
   return this.content.replace(/{(\S+)}/g, function(totalMatch, property){
     return self.propertyLookup(property).value;
   }).replace(/\/\/(\S+)\\\\/g, function(totalMatch, container){
