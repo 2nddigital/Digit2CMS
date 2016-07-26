@@ -12,7 +12,7 @@ var projectObject = {
     ],
     "child_containers": ["content"],
     "children": {
-      "content": ["0-content-0", "0-content-1"]
+      "content": ["0-content-0", "0-content-1", "0-content-2"]
     }
   },
   "0-content-0": {
@@ -26,6 +26,31 @@ var projectObject = {
     "properties": [],
     "child_containers": [],
     "children": {}
+  },
+  "0-content-2": {
+    "module": "list",
+    "child_containers": ["content"],
+    "children": {
+      "content": ["0-content-2-content-0", "0-content-2-content-1"]
+    }
+  },
+  "0-content-2-content-0": {
+    "module": "listitem",
+    "properties": [
+      {
+        "name": "description",
+        "value": "haaai"
+      }
+    ]
+  },
+  "0-content-2-content-1": {
+    "module": "listitem",
+    "properties": [
+      {
+        "name": "description",
+        "value": "booee"
+      }
+    ]
   }
 };
 

@@ -1,0 +1,12 @@
+{
+  "name": "list",
+  "content": "list.data",
+  "extends": "block",
+  "containers": [
+    {
+      "id": "content",
+      "supports": ["listitem"],
+      "size": 0
+    }
+  ]
+}
