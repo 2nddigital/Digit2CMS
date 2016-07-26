@@ -15,10 +15,13 @@ Project.prototype.export = function(){
 };
 
 Project.prototype.initialize = function(){
-  this.projectTree = this.buildSubtree("0"); //starting point of tree
+  this.projectTree = this.buildSubtree("0"); //starting point of tree: index 0
 };
 
-Project.prototype.buildSubtree = function(moduleId){
+Project.prototype.buildSubtree = function(moduleId, initialProperties){
+  if(typeof(initialProperties) === 'undefined'){
+    initialProperties = [];
+  }
   var self = this;
   var moduleSettings = {
     "module": "",
@@ -28,13 +31,11 @@ Project.prototype.buildSubtree = function(moduleId){
   }.extend(this.projectData[moduleId]);
 
   var modulePath = _path.resolve(__dirname, "..", "modules", moduleSettings.module, "module.json");
-  console.log(modulePath);
+
   var moduleObject = require(modulePath);
   var currentNode = new this.Module(moduleObject);
   currentNode.name = moduleSettings.module;
-  currentNode.initializeProperties(currentNode.propertylist.map(function(propertyName){
-    return currentNode.properties[propertyName];
-  }), true);
+  currentNode.initializeProperties(initialProperties, true);
   currentNode.initializeProperties(moduleSettings.properties);
 
   console.log(currentNode.properties);
@@ -42,7 +43,12 @@ Project.prototype.buildSubtree = function(moduleId){
   moduleSettings.child_containers.forEach(function(containerId){
     _async.parallel(moduleSettings.children[containerId].map(function(child, index){
       return function(callback){
-        var subTree = self.buildSubtree(child);
+        var forwardProperties = currentNode.propertylist.map(function(propertyName){
+          return currentNode.properties[propertyName];
+        });
+        console.log(currentNode.propertylist);
+        console.log(forwardProperties);
+        var subTree = self.buildSubtree(child, forwardProperties);
         currentNode.addChildAt(containerId, index, subTree);
         callback(null, child);
       };

@@ -61,6 +61,7 @@ Module.prototype.initializeProperties = function(properties, inherited){
         "inherited": false
       }.extend(property);
       self.properties[property.name].inherited = inherited;
+      self.propertylist.push(property.name);
     }
   });
 };
