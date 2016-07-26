@@ -60,7 +60,7 @@ Module.prototype.initializeProperties = function(properties, inherited){
         "readonly": false,
         "inherited": false
       }.extend(property);
-      self.properties[property.name].inherited = inherited
+      self.properties[property.name].inherited = inherited;
     }
   });
 };
@@ -96,10 +96,9 @@ Module.prototype.propertyLookup = function(propertyName){
 };
 
 Module.prototype.render = function(){
-  //demo for property rendering
   var self = this;
 
-  this.contentFile = _path.join(__dirname, _path.join(_path.join("../modules", this.name), this.contentFile));
+  this.contentFile = _path.resolve(__dirname, "..", "modules", this.name, this.contentFile);
   this.content = _fs.readFileSync(this.contentFile, 'UTF-8');
 
   return this.content.replace(/{(\S+)}/g, function(totalMatch, property){

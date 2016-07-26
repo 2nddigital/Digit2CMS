@@ -27,7 +27,7 @@ Project.prototype.buildSubtree = function(moduleId){
     "children": {}
   }.extend(this.projectData[moduleId]);
 
-  var modulePath = _path.join(_path.join("../modules", moduleSettings.module), "module.json");
+  var modulePath = _path.resolve(__dirname, "..", "modules", moduleSettings.module, "module.json");
   console.log(modulePath);
   var moduleObject = require(modulePath);
   var currentNode = new this.Module(moduleObject);
