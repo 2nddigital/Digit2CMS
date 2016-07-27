@@ -1,0 +1,109 @@
+{
+  "0": {
+    "module": "document",
+    "child_containers": [
+      "head",
+      "body"
+    ],
+    "children": {
+      "head": [
+        "0-head-0"
+      ],
+      "body": [
+        "0-body-0"
+      ]
+    },
+    "properties": []
+  },
+  "0-head-0": {
+    "module": "text",
+    "child_containers": [],
+    "children": {},
+    "properties": [
+      {
+        "name": "content",
+        "type": "text",
+        "value": "<title>HI!</title>",
+        "readonly": false,
+        "inherited": false
+      }
+    ]
+  },
+  "0-body-0": {
+    "module": "list",
+    "child_containers": [
+      "content"
+    ],
+    "children": {
+      "content": [
+        "0-body-0-content-0",
+        "0-body-0-content-1"
+      ]
+    },
+    "properties": []
+  },
+  "0-body-0-content-0": {
+    "module": "listitem",
+    "child_containers": [
+      "content"
+    ],
+    "children": {
+      "content": []
+    },
+    "properties": [
+      {
+        "name": "image",
+        "type": "url",
+        "value": "img2.jpg",
+        "readonly": false,
+        "inherited": false
+      },
+      {
+        "name": "description",
+        "type": "inline-text",
+        "value": "description 2",
+        "readonly": false,
+        "inherited": false
+      },
+      {
+        "name": "height",
+        "type": "dimension",
+        "value": 15,
+        "readonly": false,
+        "inherited": false
+      }
+    ]
+  },
+  "0-body-0-content-1": {
+    "module": "listitem",
+    "child_containers": [
+      "content"
+    ],
+    "children": {
+      "content": []
+    },
+    "properties": [
+      {
+        "name": "image",
+        "type": "url",
+        "value": "img1.jpg",
+        "readonly": false,
+        "inherited": false
+      },
+      {
+        "name": "description",
+        "type": "inline-text",
+        "value": "description 1",
+        "readonly": false,
+        "inherited": false
+      },
+      {
+        "name": "height",
+        "type": "dimension",
+        "value": 10,
+        "readonly": false,
+        "inherited": false
+      }
+    ]
+  }
+}

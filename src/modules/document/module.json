@@ -1,0 +1,17 @@
+{
+  "name": "document",
+  "content": "document.data",
+  "properties": [],
+  "containers": [
+    {
+      "id": "head",
+      "supports": [],
+      "size": 0
+    },
+    {
+      "id": "body",
+      "supports": [],
+      "size": 0
+    }
+  ]
+}
