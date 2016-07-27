@@ -62,5 +62,7 @@ var mainProject = new core.Project(projectObject);
 mainProject.initialize();
 console.log("------------------------------------");
 console.log(mainProject.getSubtreeByPath("0-content-2-content-1"));
-console.log("--------------END-------------------");
+console.log("------------------------------------");
+console.log(JSON.stringify(mainProject.export()));
+console.log("------------------------------------");
 console.log(mainProject.render());

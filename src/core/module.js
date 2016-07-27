@@ -44,6 +44,16 @@ function Module(moduleObject){
   return this;
 }
 
+Module.prototype.getContainers = function(){
+  var clist = [];
+  for(var i in this.containers){
+    if(this.containers.hasOwnProperty(i)){
+      clist.push(i);
+    }
+  }
+  return clist;
+};
+
 Module.prototype.initializeProperties = function(properties, inherited){
   if(typeof(inherited) === 'undefined'){
     inherited = false;
@@ -87,6 +97,15 @@ Module.prototype.getContainer = function(containerId){
   return (typeof(this.containers[containerId]) !== 'undefined') ? this.containers[containerId] : null;
 };
 
+Module.prototype.exportContainers = function(containers, parentId){
+  var containerExport = {};
+  var self = this;
+  containers.forEach(function(container){
+    containerExport[container] = self.containers[container].export(parentId + "-" + container);
+  });
+  return containerExport;
+};
+
 Module.prototype.getSubtreeByPath = function(pathList){
   if(typeof(pathList) !== 'undefined' && Array.isArray(pathList)){
     var containerKey = pathList.shift();
@@ -103,8 +122,14 @@ Module.prototype.getSubtreeByPath = function(pathList){
   }
 };
 
-Module.prototype.export = function(){
-
+Module.prototype.export = function(parentId){
+  var self = this;
+  var containers = self.getContainers();
+  return {
+    "module": self.name,
+    "child_containers": containers,
+    "children": self.exportContainers(containers, parentId)
+  };
 };
 
 Module.prototype.propertyLookup = function(propertyName){

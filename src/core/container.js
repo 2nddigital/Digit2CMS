@@ -40,7 +40,11 @@ Container.prototype.getSubtreeByPath = function(pathList){
   }
 };
 
-Container.prototype.export = function(){};
+Container.prototype.export = function(parentId){
+  return this.modules.map(function(module, index){
+    return parentId + "-" + index;
+  });
+};
 
 Container.prototype.render = function(){
   var result = "";

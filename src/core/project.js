@@ -12,6 +12,23 @@ function Project(projectObject){
 
 Project.prototype.export = function(){
   //export tree per layer
+  var self = this;
+  var exportQueue = ["0"];
+  var exportedObject = {};
+
+  while(exportQueue.length > 0){
+    var exportModulePath = exportQueue.shift();
+    var exportModule = this.getSubtreeByPath(exportModulePath);
+    var exportedModule = exportModule.export(exportModulePath);
+    exportedObject[exportModulePath] = exportedModule;
+
+    exportedModule.child_containers.forEach(function(containerId){
+      exportQueue.push.apply(exportQueue, exportedModule.children[containerId]);
+    });
+
+  }
+  exportedObject["0"] = this.projectTree.export("0");
+  return exportedObject;
 };
 
 Project.prototype.initialize = function(){
