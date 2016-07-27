@@ -24,6 +24,22 @@ Container.prototype.addChildAt = function(index, childModule){
   }
 };
 
+Container.prototype.getSubtreeByPath = function(pathList){
+  if(typeof(pathList) !== 'undefined' && Array.isArray(pathList)){
+    var moduleIndex = parseInt(pathList.shift(), 10);
+    if(pathList.length === 0){
+      return this.modules[moduleIndex];
+    }else if(typeof(pathList) === 'string'){
+      return this.getSubtreeByPath(pathList.split("-"));
+    }else{
+      return this.modules[moduleIndex].getSubtreeByPath(pathList);
+    }
+  }else{
+    console.log("invalid pathlist");
+    return null;
+  }
+};
+
 Container.prototype.export = function(){};
 
 Container.prototype.render = function(){

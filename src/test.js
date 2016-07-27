@@ -39,7 +39,11 @@ var projectObject = {
     "properties": [
       {
         "name": "description",
-        "value": "haaai"
+        "value": "value 1"
+      },
+      {
+        "name": "image",
+        "value": "img.jpg"
       }
     ]
   },
@@ -48,7 +52,7 @@ var projectObject = {
     "properties": [
       {
         "name": "description",
-        "value": "booee"
+        "value": "value 2"
       }
     ]
   }
@@ -56,4 +60,7 @@ var projectObject = {
 
 var mainProject = new core.Project(projectObject);
 mainProject.initialize();
+console.log("------------------------------------");
+console.log(mainProject.getSubtreeByPath("0-content-2-content-1"));
+console.log("--------------END-------------------");
 console.log(mainProject.render());

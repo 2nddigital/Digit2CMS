@@ -38,16 +38,12 @@ Project.prototype.buildSubtree = function(moduleId, initialProperties){
   currentNode.initializeProperties(initialProperties, true);
   currentNode.initializeProperties(moduleSettings.properties);
 
-  console.log(currentNode.properties);
-
   moduleSettings.child_containers.forEach(function(containerId){
     _async.parallel(moduleSettings.children[containerId].map(function(child, index){
       return function(callback){
         var forwardProperties = currentNode.propertylist.map(function(propertyName){
           return currentNode.properties[propertyName];
         });
-        console.log(currentNode.propertylist);
-        console.log(forwardProperties);
         var subTree = self.buildSubtree(child, forwardProperties);
         currentNode.addChildAt(containerId, index, subTree);
         callback(null, child);
@@ -63,6 +59,24 @@ Project.prototype.buildSubtree = function(moduleId, initialProperties){
 
 Project.prototype.render = function(){
   return this.projectTree.render();
+};
+
+Project.prototype.getSubtreeByPath = function(pathList){
+  if(typeof(pathList) !== 'undefined' && Array.isArray(pathList)){
+    var containerKey = pathList.shift();
+    if(pathList.length === 0 && containerKey === "0"){
+      return this.projectTree;
+    }else if(containerKey === "0"){
+      return this.projectTree.getSubtreeByPath(pathList);
+    }else{
+      console.log("unknown relative key: " + containerKey);
+    }
+  }else if(typeof(pathList) === 'string'){
+    return this.getSubtreeByPath(pathList.split("-"));
+  }else{
+    console.log("invalid pathlist");
+    return null;
+  }
 };
 
 module.exports = Project;

@@ -82,8 +82,25 @@ Module.prototype.addChildAt = function(containerId, index, childModule){
   }
 };
 
+//TODO: remove getContainer
 Module.prototype.getContainer = function(containerId){
   return (typeof(this.containers[containerId]) !== 'undefined') ? this.containers[containerId] : null;
+};
+
+Module.prototype.getSubtreeByPath = function(pathList){
+  if(typeof(pathList) !== 'undefined' && Array.isArray(pathList)){
+    var containerKey = pathList.shift();
+    if(pathList.length === 0){
+      return this.containers[containerKey];
+    }else{
+      return this.containers[containerKey].getSubtreeByPath(pathList);
+    }
+  }else if(typeof(pathList) === 'string'){
+    return this.getSubtreeByPath(pathList.split("-"));
+  }else{
+    console.log("invalid pathlist");
+    return null;
+  }
 };
 
 Module.prototype.export = function(){
@@ -91,8 +108,6 @@ Module.prototype.export = function(){
 };
 
 Module.prototype.propertyLookup = function(propertyName){
-  console.log(propertyName + ":");
-  console.log(this.properties[propertyName]);
   return this.properties[propertyName];
 };
 
