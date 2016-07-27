@@ -22,12 +22,11 @@ Project.prototype.export = function(){
     var exportedModule = exportModule.export(exportModulePath);
     exportedObject[exportModulePath] = exportedModule;
 
-    exportedModule.child_containers.forEach(function(containerId){
+    for(var i in exportedModule.child_containers){
+      var containerId = exportedModule.child_containers[i];
       exportQueue.push.apply(exportQueue, exportedModule.children[containerId]);
-    });
-
+    }
   }
-  exportedObject["0"] = this.projectTree.export("0");
   return exportedObject;
 };
 
