@@ -1,5 +1,6 @@
 require("./core/proto.js");
 var core = require("./core/core.js");
+var _path = require("path");
 
 var projectObject = {
   "0": {
@@ -58,11 +59,17 @@ var projectObject = {
   }
 };
 
-var mainProject = new core.Project(projectObject);
-mainProject.initialize();
-console.log("------------------------------------");
-console.log(mainProject.getSubtreeByPath("0-content-2-content-1"));
-console.log("------------------------------------");
-console.log(JSON.stringify(mainProject.export()));
-console.log("------------------------------------");
-console.log(mainProject.render());
+process.argv.forEach(function(val, index){
+  if(index > 1){
+    var projectDataPath = _path.resolve(process.cwd(), val);
+    var projectData = require(projectDataPath);
+    var project = new core.Project(projectData);
+    project.initialize();
+    console.log("------------------------------------");
+    console.log(project.getSubtreeByPath("0-content-2-content-1"));
+    console.log("------------------------------------");
+    console.log(JSON.stringify(project.export()));
+    console.log("------------------------------------");
+    console.log(project.render());
+  }
+});
