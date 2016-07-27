@@ -1,0 +1,33 @@
+{
+  "name": "digit2cms",
+  "version": "1.0.0",
+  "description": "modular flat-file cms",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "node ./src/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timbeurskens/Digit2CMS.git"
+  },
+  "keywords": [
+    "cms",
+    "node",
+    "generator",
+    "flat-file",
+    "modular"
+  ],
+  "author": "Factory97",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timbeurskens/Digit2CMS/issues"
+  },
+  "homepage": "https://github.com/timbeurskens/Digit2CMS#readme",
+  "dependencies": {
+    "async": "^2.0.1",
+    "promise": "^7.1.1"
+  }
+}
