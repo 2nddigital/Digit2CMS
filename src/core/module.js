@@ -122,13 +122,24 @@ Module.prototype.getSubtreeByPath = function(pathList){
   }
 };
 
+Module.prototype.exportProperties = function(){
+  var self = this;
+  return this.propertylist.map(function(propertyId){
+    var property = self.properties[propertyId];
+    return property;
+  }).filter(function(property){
+    return !property.inherited;
+  });
+};
+
 Module.prototype.export = function(parentId){
   var self = this;
   var containers = self.getContainers();
   return {
     "module": self.name,
     "child_containers": containers,
-    "children": self.exportContainers(containers, parentId)
+    "children": self.exportContainers(containers, parentId),
+    "properties": self.exportProperties()
   };
 };
 
