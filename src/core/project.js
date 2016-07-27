@@ -65,8 +65,8 @@ Project.prototype.buildSubtree = function(moduleId, initialProperties){
         callback(null, child);
       };
     }), function(err, results){
-      console.log(err);
-      console.log(results);
+      if(err)
+        console.log(err);
     });
   });
 
