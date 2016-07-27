@@ -1,4 +1,5 @@
 {
+  "name": "listitem",
   "script": "listitem.js",
   "content": "listitem.data",
   "extends": "block",
@@ -14,12 +15,6 @@
     {
       "name": "height",
       "type": "dimension"
-    },
-  ],
-  "constants": [
-    {
-      "name": "name",
-      "value": "listitem"
     }
   ],
   "containers": [
