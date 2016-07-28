@@ -1,3 +1,5 @@
+var _async = require('async');
+
 function Container(containerObject){
   var self = this;
   this.Module = require("./module.js");
@@ -24,6 +26,7 @@ Container.prototype.addChildAt = function(index, childModule){
 };
 
 Container.prototype.walkSubtree = function(parentId, callback){
+
   this.modules.forEach(function(module, index){
     module.walkSubtree(parentId + "-" + index, callback);
   });

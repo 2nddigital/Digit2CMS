@@ -11,22 +11,10 @@ function Project(projectObject){
 }
 
 Project.prototype.export = function(){
-  //export tree per layer
-  var self = this;
-  var exportQueue = ["0"];
   var exportedObject = {};
-
-  while(exportQueue.length > 0){
-    var exportModulePath = exportQueue.shift();
-    var exportModule = this.getSubtreeByPath(exportModulePath);
-    var exportedModule = exportModule.export(exportModulePath);
-    exportedObject[exportModulePath] = exportedModule;
-
-    for(var i in exportedModule.child_containers){
-      var containerId = exportedModule.child_containers[i];
-      exportQueue.push.apply(exportQueue, exportedModule.children[containerId]);
-    }
-  }
+  this.walkSubtree(function(module, id){
+    exportedObject[id] = module.export(id);
+  });
   return exportedObject;
 };
 
@@ -67,20 +55,25 @@ Project.prototype.buildSubtree = function(moduleId, initialProperties){
   currentNode.initializeProperties(initialProperties, true);
   currentNode.initializeProperties(moduleSettings.properties);
 
-  moduleSettings.child_containers.forEach(function(containerId){
-    _async.parallel(moduleSettings.children[containerId].map(function(child, index){
-      return function(callback){
-        var forwardProperties = currentNode.propertylist.map(function(propertyName){
-          return currentNode.properties[propertyName];
-        });
-        var subTree = self.buildSubtree(child, forwardProperties);
-        currentNode.addChildAt(containerId, index, subTree);
-        callback(null, child);
-      };
-    }), function(err, results){
-      if(err)
-        console.log(err);
+  _async.forEachOf(moduleSettings.child_containers, function(containerName, containerIndex, containerCallback){
+    _async.forEachOf(moduleSettings.children[containerName], function(childModule, childIndex, childCallback){
+      var forwardProperties = currentNode.propertylist.map(function(propertyName){
+        return currentNode.properties[propertyName];
+      });
+      var subTree = self.buildSubtree(childModule, forwardProperties);
+      currentNode.addChildAt(containerName, childIndex, subTree);
+      childCallback(null, childIndex);
+    }, function(childError, childResults){
+      if(!childError){
+        containerCallback(null, containerName);
+      }else{
+        console.log("something wrong?");
+      }
     });
+  }, function(containerError, containerResults){
+    if(containerError){
+      console.log("something wrong?");
+    }
   });
 
   return currentNode;

@@ -1,6 +1,7 @@
 var _path = require("path");
 var _fs = require("fs");
 var Container = require('./container.js');
+var _async = require('async');
 
 function Module(moduleObject){
   //TODO: extend module object by first initializing the super class. (every function call also checks super class)
@@ -154,14 +155,15 @@ Module.prototype.propertyLookup = function(propertyName){
   return this.properties[propertyName];
 };
 
-Module.prototype.walkSubtree = function(parentId, callback){
+Module.prototype.walkSubtree = function(parentId, mainCallback){
   var self = this;
-  if(typeof(callback) !== 'function'){
-    callback = function(){};
+  if(typeof(mainCallback) !== 'function'){
+    mainCallback = function(){};
   }
-  callback(this, parentId);
+  mainCallback(this, parentId);
+
   this.getContainers().forEach(function(containerId){
-    self.containers[containerId].walkSubtree(parentId + "-" + containerId, callback);
+    self.containers[containerId].walkSubtree(parentId + "-" + containerId, mainCallback);
   });
 };
 
