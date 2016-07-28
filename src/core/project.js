@@ -1,6 +1,7 @@
 var _async = require("async");
 var _path = require("path");
 var Module = require('./module.js');
+var ProjectLink = require('./projectlink.js');
 
 function Project(projectObject){
   var self = this;
@@ -25,6 +26,7 @@ Project.prototype.initializeTree = function(){
 Project.prototype.initializeModules = function(){
   this.walkSubtree(function(module, id){
     module.initialize(id);
+    module.initializeScript(new ProjectLink(this, module), id);
   });
 };
 
