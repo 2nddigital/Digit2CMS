@@ -22,7 +22,10 @@ function Module(moduleObject){
   this.name = null;
   this.$super = null;
   this.content = "";
+  this.script = null;
+  this.moduleEventInstance = null;
   this.contentFile = extendedModuleObject.content;
+  this.scriptFile = extendedModuleObject.script;
 
   extendedModuleObject.properties.forEach(function(elem){
     self.propertylist.push(elem.name);
@@ -48,8 +51,21 @@ function Module(moduleObject){
 }
 
 Module.prototype.initialize = function(id){
-  this.contentFile = _path.resolve(__dirname, "..", "modules", this.name, this.contentFile);
-  this.content = _fs.readFileSync(this.contentFile, 'UTF-8');
+  if(this.contentFile !== null){
+    this.contentFile = _path.resolve(__dirname, "..", "modules", this.name, this.contentFile);
+    this.content = _fs.readFileSync(this.contentFile, 'UTF-8');
+  }
+  if(this.scriptFile !== null){
+    this.scriptFile = _path.resolve(__dirname, "..", "modules", this.name, this.scriptFile);
+    this.script = require(this.scriptFile);
+  }
+
+};
+
+Module.prototype.initializeScript = function(projectLink, id){
+  if(typeof(this.script) === 'function'){
+    this.moduleEventInstance = new this.script(projectLink, id);
+  }
 };
 
 Module.prototype.getContainers = function(){
@@ -89,6 +105,38 @@ Module.prototype.addChild = function(containerId, childModule){
     if(typeof(this.containers[containerId]) !== 'undefined' && (this.containers[containerId] instanceof Container)){
       this.containers[containerId].addChild(childModule);
     }
+  }
+};
+
+Module.prototype.createChild = function(containerId, childProperties){
+  var self = this;
+  if(typeof(childProperties) !== 'object'){
+    childProperties = {};
+  }
+  var extendedChildProperties = {
+    "module": "",
+    "properties": [],
+    "child_containers": [],
+    "children": {}
+  }.extend(childProperties);
+
+  var modulePath = _path.resolve(__dirname, "..", "modules", extendedChildProperties.module, "module.json");
+
+  if(typeof(this.containers[containerId]) !== 'undefined' && (this.containers[containerId] instanceof Container)){
+    var initialProperties = this.propertylist.map(function(propertyName){
+      return self.properties[propertyName];
+    });
+
+    var moduleObject = require(modulePath);
+    var newModule = new Module(moduleObject);
+    newModule.name = extendedChildProperties.module;
+    newModule.initializeProperties(initialProperties, true);
+    newModule.initializeProperties(extendedChildProperties.properties);
+
+    this.addChild(containerId, newModule);
+    return newModule;
+  }else{
+    return null;
   }
 };
 
@@ -153,6 +201,16 @@ Module.prototype.export = function(parentId){
 
 Module.prototype.propertyLookup = function(propertyName){
   return this.properties[propertyName];
+};
+
+Module.prototype.propertySet = function(propertyName, propertyValue){
+  var property = this.propertyLookup(propertyName);
+  if(property !== null && property.inherited === false){
+    property.value = propertyValue;
+    return true;
+  }else{
+    return false;
+  }
 };
 
 Module.prototype.walkSubtree = function(parentId, mainCallback){
