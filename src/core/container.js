@@ -13,7 +13,6 @@ function Container(containerObject){
 
 Container.prototype.addChild = function(childModule){
   if(childModule instanceof this.Module){
-
     this.modules.push(childModule);
   }
 };
@@ -22,6 +21,12 @@ Container.prototype.addChildAt = function(index, childModule){
   if(childModule instanceof this.Module){
     this.modules[index] = childModule;
   }
+};
+
+Container.prototype.walkSubtree = function(parentId, callback){
+  this.modules.forEach(function(module, index){
+    module.walkSubtree(parentId + "-" + index, callback);
+  });
 };
 
 Container.prototype.getSubtreeByPath = function(pathList){

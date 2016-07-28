@@ -1,9 +1,9 @@
 var _async = require("async");
 var _path = require("path");
+var Module = require('./module.js');
 
 function Project(projectObject){
   var self = this;
-  this.Module = require("./module.js");
   this.projectTree = null;
   this.projectData = projectObject;
 
@@ -30,8 +30,21 @@ Project.prototype.export = function(){
   return exportedObject;
 };
 
-Project.prototype.initialize = function(){
+Project.prototype.initializeTree = function(){
   this.projectTree = this.buildSubtree("0"); //starting point of tree: index 0
+};
+
+Project.prototype.initializeModules = function(){
+  this.walkSubtree(function(module, id){
+    module.initialize(id);
+  });
+};
+
+Project.prototype.walkSubtree = function(callback){
+  if(typeof(callback) !== 'function'){
+    callback = function(){};
+  }
+  this.projectTree.walkSubtree("0", callback);
 };
 
 Project.prototype.buildSubtree = function(moduleId, initialProperties){
@@ -49,7 +62,7 @@ Project.prototype.buildSubtree = function(moduleId, initialProperties){
   var modulePath = _path.resolve(__dirname, "..", "modules", moduleSettings.module, "module.json");
 
   var moduleObject = require(modulePath);
-  var currentNode = new this.Module(moduleObject);
+  var currentNode = new Module(moduleObject);
   currentNode.name = moduleSettings.module;
   currentNode.initializeProperties(initialProperties, true);
   currentNode.initializeProperties(moduleSettings.properties);

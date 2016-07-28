@@ -7,11 +7,16 @@ process.argv.forEach(function(val, index){
     var projectDataPath = _path.resolve(process.cwd(), val);
     var projectData = require(projectDataPath);
     var project = new core.Project(projectData);
-    project.initialize();
+    project.initializeTree();
+    project.initializeModules();
     console.log("-------------EXPORT:----------------");
     console.log(JSON.stringify(project.export(), null, 2));
     console.log("-------------RENDER:----------------");
     console.log(project.render());
+    console.log("------------------------------------");
+    project.walkSubtree(function(module, id){
+      console.log(id + ": " + module.name);
+    });
     console.log("------------------------------------");
   }
 });

@@ -1,7 +1,10 @@
 var _path = require("path");
 var _fs = require("fs");
+var Container = require('./container.js');
 
 function Module(moduleObject){
+  //TODO: extend module object by first initializing the super class. (every function call also checks super class)
+
   var extendedModuleObject = {
     "name": null,
     "script": null,
@@ -12,13 +15,12 @@ function Module(moduleObject){
   }.extend(moduleObject);
 
   var self = this;
-  this.Container = require("./container.js");
   this.containers = {};
   this.properties = {};
   this.propertylist = [];
   this.name = null;
-
-  this.content = null;
+  this.$super = null;
+  this.content = "";
   this.contentFile = extendedModuleObject.content;
 
   extendedModuleObject.properties.forEach(function(elem){
@@ -36,13 +38,18 @@ function Module(moduleObject){
   if(typeof(extendedModuleObject.containers) !== 'undefined' && Array.isArray(extendedModuleObject.containers)){
     extendedModuleObject.containers.forEach(function(containerObject){
       if(typeof(containerObject.id) !== 'undefined'){
-        self.containers[containerObject.id] = new self.Container(containerObject);
+        self.containers[containerObject.id] = new Container(containerObject);
       }
     });
   }
 
   return this;
 }
+
+Module.prototype.initialize = function(id){
+  this.contentFile = _path.resolve(__dirname, "..", "modules", this.name, this.contentFile);
+  this.content = _fs.readFileSync(this.contentFile, 'UTF-8');
+};
 
 Module.prototype.getContainers = function(){
   var clist = [];
@@ -78,7 +85,7 @@ Module.prototype.initializeProperties = function(properties, inherited){
 
 Module.prototype.addChild = function(containerId, childModule){
   if(childModule instanceof Module){
-    if(typeof(this.containers[containerId]) !== 'undefined' && (this.containers[containerId] instanceof this.Container)){
+    if(typeof(this.containers[containerId]) !== 'undefined' && (this.containers[containerId] instanceof Container)){
       this.containers[containerId].addChild(childModule);
     }
   }
@@ -86,7 +93,7 @@ Module.prototype.addChild = function(containerId, childModule){
 
 Module.prototype.addChildAt = function(containerId, index, childModule){
   if(childModule instanceof Module){
-    if(typeof(this.containers[containerId]) !== 'undefined' && (this.containers[containerId] instanceof this.Container)){
+    if(typeof(this.containers[containerId]) !== 'undefined' && (this.containers[containerId] instanceof Container)){
       this.containers[containerId].addChildAt(index, childModule);
     }
   }
@@ -147,12 +154,19 @@ Module.prototype.propertyLookup = function(propertyName){
   return this.properties[propertyName];
 };
 
+Module.prototype.walkSubtree = function(parentId, callback){
+  var self = this;
+  if(typeof(callback) !== 'function'){
+    callback = function(){};
+  }
+  callback(this, parentId);
+  this.getContainers().forEach(function(containerId){
+    self.containers[containerId].walkSubtree(parentId + "-" + containerId, callback);
+  });
+};
+
 Module.prototype.render = function(){
   var self = this;
-
-  this.contentFile = _path.resolve(__dirname, "..", "modules", this.name, this.contentFile);
-  this.content = _fs.readFileSync(this.contentFile, 'UTF-8');
-
   return this.content.replace(/{(\S+)}/g, function(totalMatch, property){
     return self.propertyLookup(property).value;
   }).replace(/\/\/(\S+)\\\\/g, function(totalMatch, container){
