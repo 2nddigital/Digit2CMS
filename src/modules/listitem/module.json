@@ -9,6 +9,10 @@
       "type": "url"
     },
     {
+      "name": "items",
+      "type": "number"
+    },
+    {
       "name": "description",
       "type": "inline-text"
     },
