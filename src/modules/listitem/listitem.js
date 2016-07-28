@@ -5,15 +5,10 @@ var Module = require('../../core/module.js');
 * it can be used to communicate with other modules in the tree using the getModuleById(module_id) function.
 ***/
 module.exports = function(projectLink, moduleId){
-  console.log(moduleId);
-  console.log(projectLink._module.propertyLookup("image"));
-  var n = projectLink._module.propertyLookup("items").value;
-  console.log("items: " + n);
-  for(var i = 0; i < n; i++){
-    projectLink._module.createChild("content", {"module": "text"}).propertySet("content", "item: " + i);
-  }
-  this.test = function(){
-    return moduleId;
+  this.initialize = function(){
+    for(var i = 0; i < this.link.getProperty("items"); i++){
+      this.link.createModule("content", {"module": "text"}).propertySet("content", "item: " + i);
+    }
   };
 
   return this;

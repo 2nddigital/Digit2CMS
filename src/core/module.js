@@ -65,6 +65,10 @@ Module.prototype.initialize = function(id){
 Module.prototype.initializeScript = function(projectLink, id){
   if(typeof(this.script) === 'function'){
     this.moduleEventInstance = new this.script(projectLink, id);
+    this.moduleEventInstance.link = projectLink;
+    if(typeof(this.moduleEventInstance.initialize) === 'function'){
+      this.moduleEventInstance.initialize();
+    }
   }
 };
 
