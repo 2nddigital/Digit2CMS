@@ -6,7 +6,6 @@ var _async = require('async');
 
 function Module(moduleObject, moduleName){
   //TODO: extend module object by first initializing the super class. (every function call also checks super class)
-
   var extendedModuleObject = {
     "name": null,
     "script": null,
@@ -22,6 +21,7 @@ function Module(moduleObject, moduleName){
   this.propertylist = [];
   this.name = moduleName;
   this.$super = null;
+  this.$parentContainer = null;
   this.content = "";
   this.script = null;
   this.moduleEventInstance = null;
@@ -44,13 +44,28 @@ function Module(moduleObject, moduleName){
   if(typeof(extendedModuleObject.containers) !== 'undefined' && Array.isArray(extendedModuleObject.containers)){
     extendedModuleObject.containers.forEach(function(containerObject){
       if(typeof(containerObject.id) !== 'undefined'){
-        self.containers[containerObject.id] = new Container(containerObject);
+        self.containers[containerObject.id] = new Container(containerObject, this);
       }
     });
   }
 
   return this;
 }
+
+Module.prototype.getPathToRoot = function(){
+  var currentNode = this;
+  var path = "";
+  while(currentNode instanceof Module || currentNode instanceof Container){
+    if(currentNode instanceof Module){
+      var newNode = currentNode.$parentContainer;
+      path = newNode.containerProperties.id + "-" + newNode.getId(currentNode) + "-" + path;
+      currentNode = newNode;
+    }else{
+      currentNode = currentNode.$parentModule;
+    }
+  }
+  return path;
+};
 
 Module.prototype.initialize = function(id, projectLink){
   if(this.contentFile !== null){
@@ -68,6 +83,7 @@ Module.prototype.initialize = function(id, projectLink){
   if(typeof(this.moduleEventInstance.initialize) === 'function'){
     this.moduleEventInstance.initialize();
   }
+  return this;
 };
 
 Module.prototype.getContainers = function(){

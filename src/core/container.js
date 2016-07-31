@@ -1,7 +1,11 @@
 var _async = require('async');
 
-function Container(containerObject){
+function Container(containerObject, parentModule){
+  if(typeof(parentModule) === 'undefined'){
+    parentModule = null;
+  }
   var self = this;
+  this.$parentModule = parentModule;
   this.Module = require("./module.js");
   this.containerProperties = {
     "id": null,
@@ -14,12 +18,14 @@ function Container(containerObject){
 
 Container.prototype.addChild = function(childModule){
   if(childModule instanceof this.Module){
+    childModule.$parentContainer = this;
     this.modules.push(childModule);
   }
 };
 
 Container.prototype.addChildAt = function(index, childModule){
   if(childModule instanceof this.Module){
+    childModule.$parentContainer = this;
     this.modules[index] = childModule;
   }
 };
@@ -44,6 +50,13 @@ Container.prototype.getSubtreeByPath = function(pathList){
     console.log("invalid pathlist");
     return null;
   }
+};
+
+Container.prototype.getId = function(mod){
+  if(mod instanceof this.Module){
+    return this.modules.indexOf(mod);
+  }
+  return null;
 };
 
 Container.prototype.export = function(parentId){

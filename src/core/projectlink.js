@@ -21,7 +21,11 @@ ProjectLink.prototype.extend({
     return this._module.propertySet(propertyName, propertyValue);
   },
   createModule: function(container, moduleConfig){
-    return this._module.createChild(container, moduleConfig);
+    var newModule = this._module.createChild(container, moduleConfig);
+    var id = newModule.getPathToRoot();
+    console.log(id);
+    return newModule;
+    //newModule.initialize();
   }
 });
 
