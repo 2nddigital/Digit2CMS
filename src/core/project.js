@@ -24,9 +24,9 @@ Project.prototype.initializeTree = function(){
 };
 
 Project.prototype.initializeModules = function(){
+  var self = this;
   this.walkSubtree(function(module, id){
-    module.initialize(id);
-    module.initializeScript(new ProjectLink(this, module), id);
+    module.initialize(id, new ProjectLink(self, module));
   });
 };
 
@@ -52,8 +52,7 @@ Project.prototype.buildSubtree = function(moduleId, initialProperties){
   var modulePath = _path.resolve(__dirname, "..", "modules", moduleSettings.module, "module.json");
 
   var moduleObject = require(modulePath);
-  var currentNode = new Module(moduleObject);
-  currentNode.name = moduleSettings.module;
+  var currentNode = new Module(moduleObject, moduleSettings.module);
   currentNode.initializeProperties(initialProperties, true);
   currentNode.initializeProperties(moduleSettings.properties);
 

@@ -1,9 +1,10 @@
 var _path = require("path");
 var _fs = require("fs");
 var Container = require('./container.js');
+var DefaultModule = require("./module.default.js");
 var _async = require('async');
 
-function Module(moduleObject){
+function Module(moduleObject, moduleName){
   //TODO: extend module object by first initializing the super class. (every function call also checks super class)
 
   var extendedModuleObject = {
@@ -19,13 +20,14 @@ function Module(moduleObject){
   this.containers = {};
   this.properties = {};
   this.propertylist = [];
-  this.name = null;
+  this.name = moduleName;
   this.$super = null;
   this.content = "";
   this.script = null;
   this.moduleEventInstance = null;
-  this.contentFile = extendedModuleObject.content;
-  this.scriptFile = extendedModuleObject.script;
+
+  this.contentFile = extendedModuleObject.content !== null ? _path.resolve(__dirname, "..", "modules", this.name, extendedModuleObject.content) : null;
+  this.scriptFile = extendedModuleObject.script !== null ? _path.resolve(__dirname, "..", "modules", this.name, extendedModuleObject.script) : null;
 
   extendedModuleObject.properties.forEach(function(elem){
     self.propertylist.push(elem.name);
@@ -50,25 +52,21 @@ function Module(moduleObject){
   return this;
 }
 
-Module.prototype.initialize = function(id){
+Module.prototype.initialize = function(id, projectLink){
   if(this.contentFile !== null){
-    this.contentFile = _path.resolve(__dirname, "..", "modules", this.name, this.contentFile);
     this.content = _fs.readFileSync(this.contentFile, 'UTF-8');
   }
   if(this.scriptFile !== null){
-    this.scriptFile = _path.resolve(__dirname, "..", "modules", this.name, this.scriptFile);
     this.script = require(this.scriptFile);
   }
-
-};
-
-Module.prototype.initializeScript = function(projectLink, id){
   if(typeof(this.script) === 'function'){
     this.moduleEventInstance = new this.script(projectLink, id);
-    this.moduleEventInstance.link = projectLink;
-    if(typeof(this.moduleEventInstance.initialize) === 'function'){
-      this.moduleEventInstance.initialize();
-    }
+  }else{
+    this.moduleEventInstance = new DefaultModule(projectLink, id);
+  }
+  this.moduleEventInstance.link = projectLink;
+  if(typeof(this.moduleEventInstance.initialize) === 'function'){
+    this.moduleEventInstance.initialize();
   }
 };
 
@@ -132,8 +130,7 @@ Module.prototype.createChild = function(containerId, childProperties){
     });
 
     var moduleObject = require(modulePath);
-    var newModule = new Module(moduleObject);
-    newModule.name = extendedChildProperties.module;
+    var newModule = new Module(moduleObject, extendedChildProperties.module);
     newModule.initializeProperties(initialProperties, true);
     newModule.initializeProperties(extendedChildProperties.properties);
 

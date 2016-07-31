@@ -1,4 +1,7 @@
 Object.prototype.extend = function(ext){
+  if(typeof(ext) !== 'object'){
+    ext = {};
+  }
   for(var i in ext){
     if(ext.hasOwnProperty(i)){
       this[i] = ext[i];
@@ -8,6 +11,9 @@ Object.prototype.extend = function(ext){
 };
 
 Object.prototype.safeExtend = function(ext){
+  if(typeof(ext) !== 'object'){
+    ext = {};
+  }
   var newObject = {};
   for(var i1 in this){
     if(this.hasOwnProperty(i1)){
