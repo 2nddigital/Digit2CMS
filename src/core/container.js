@@ -9,7 +9,6 @@ function Container(containerObject){
     "size": 0
   }.extend(containerObject);
   this.modules = [];
-
   return this;
 }
 
@@ -26,7 +25,6 @@ Container.prototype.addChildAt = function(index, childModule){
 };
 
 Container.prototype.walkSubtree = function(parentId, callback){
-
   this.modules.forEach(function(module, index){
     module.walkSubtree(parentId + "-" + index, callback);
   });
