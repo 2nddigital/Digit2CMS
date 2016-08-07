@@ -126,6 +126,7 @@ Module.prototype.addChild = function(containerId, childModule){
   }
 };
 
+//TODO: use createChild to build project tree
 Module.prototype.createChild = function(containerId, childProperties){
   var self = this;
   if(typeof(childProperties) !== 'object'){

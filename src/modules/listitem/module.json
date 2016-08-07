@@ -24,7 +24,9 @@
   "containers": [
     {
       "id": "content",
-      "supports": ["text"],
+      "supports": [
+        "text"
+      ],
       "size": 0
     }
   ]
