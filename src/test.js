@@ -17,7 +17,11 @@ process.argv.forEach(function(val, index){
     console.log("-------------STATS:-----------------");
     project.walkSubtree(function(module, id){
       console.log(id + ": " + module.name);
+      if(typeof(module.moduleEventInstance.onPreRender) === 'function')
+        module.moduleEventInstance.onPreRender();
     });
     console.log("------------------------------------");
   }
+
+  console.log(core.Types.checkType("75.3%", "percentage"));
 });
