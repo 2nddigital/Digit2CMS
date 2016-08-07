@@ -23,9 +23,8 @@ ProjectLink.prototype.extend({
   createModule: function(container, moduleConfig){
     var newModule = this._module.createChild(container, moduleConfig);
     var id = newModule.getPathToRoot();
-    console.log(id);
+    newModule.initialize(id, new ProjectLink(this._project, newModule));
     return newModule;
-    //newModule.initialize();
   }
 });
 

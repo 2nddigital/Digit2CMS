@@ -44,7 +44,7 @@ Container.prototype.getSubtreeByPath = function(pathList){
     }else if(typeof(pathList) === 'string'){
       return this.getSubtreeByPath(pathList.split("-"));
     }else{
-      return this.modules[moduleIndex].getSubtreeByPath(pathList);
+      return typeof(this.modules[moduleIndex]) !== 'undefined' ? this.modules[moduleIndex].getSubtreeByPath(pathList) : null;
     }
   }else{
     console.log("invalid pathlist");

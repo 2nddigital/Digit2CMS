@@ -44,7 +44,7 @@ function Module(moduleObject, moduleName){
   if(typeof(extendedModuleObject.containers) !== 'undefined' && Array.isArray(extendedModuleObject.containers)){
     extendedModuleObject.containers.forEach(function(containerObject){
       if(typeof(containerObject.id) !== 'undefined'){
-        self.containers[containerObject.id] = new Container(containerObject, this);
+        self.containers[containerObject.id] = new Container(containerObject, self);
       }
     });
   }
@@ -54,16 +54,22 @@ function Module(moduleObject, moduleName){
 
 Module.prototype.getPathToRoot = function(){
   var currentNode = this;
+  var newNode = null;
   var path = "";
   while(currentNode instanceof Module || currentNode instanceof Container){
     if(currentNode instanceof Module){
-      var newNode = currentNode.$parentContainer;
-      path = newNode.containerProperties.id + "-" + newNode.getId(currentNode) + "-" + path;
+      newNode = currentNode.$parentContainer;
+      if(newNode !== null){
+        path = newNode.containerProperties.id + "-" + newNode.getId(currentNode) + (path.length > 0 ? ("-" + path) : "");
+      }else{
+        path = "0-" + path;
+      }
       currentNode = newNode;
-    }else{
+    }else if(currentNode instanceof Container){
       currentNode = currentNode.$parentModule;
     }
   }
+  //console.log(currentNode);
   return path;
 };
 

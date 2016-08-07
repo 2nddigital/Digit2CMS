@@ -11,5 +11,13 @@ module.exports = function(projectLink, moduleId){
     }
   };
 
+  this.onPreRender = function(){
+    this.link.getModule("0-body-0-content-1").test();
+  };
+
+  this.test = function(){
+    console.log("it works! i am " + moduleId);
+  };
+
   return this;
 };
