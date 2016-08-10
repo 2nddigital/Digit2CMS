@@ -9,6 +9,10 @@
       "type": "url"
     },
     {
+      "name": "items",
+      "type": "number"
+    },
+    {
       "name": "description",
       "type": "inline-text"
     },
@@ -20,7 +24,9 @@
   "containers": [
     {
       "id": "content",
-      "supports": ["text"],
+      "supports": [
+        "text"
+      ],
       "size": 0
     }
   ]

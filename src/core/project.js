@@ -1,6 +1,7 @@
 var _async = require("async");
 var _path = require("path");
 var Module = require('./module.js');
+var ProjectLink = require('./projectlink.js');
 
 function Project(projectObject){
   var self = this;
@@ -23,8 +24,9 @@ Project.prototype.initializeTree = function(){
 };
 
 Project.prototype.initializeModules = function(){
+  var self = this;
   this.walkSubtree(function(module, id){
-    module.initialize(id);
+    module.initialize(id, new ProjectLink(self, module));
   });
 };
 
@@ -35,10 +37,7 @@ Project.prototype.walkSubtree = function(callback){
   this.projectTree.walkSubtree("0", callback);
 };
 
-Project.prototype.buildSubtree = function(moduleId, initialProperties){
-  if(typeof(initialProperties) === 'undefined'){
-    initialProperties = [];
-  }
+Project.prototype.buildSubtree = function(moduleId){
   var self = this;
   var moduleSettings = {
     "module": "",
@@ -50,17 +49,12 @@ Project.prototype.buildSubtree = function(moduleId, initialProperties){
   var modulePath = _path.resolve(__dirname, "..", "modules", moduleSettings.module, "module.json");
 
   var moduleObject = require(modulePath);
-  var currentNode = new Module(moduleObject);
-  currentNode.name = moduleSettings.module;
-  currentNode.initializeProperties(initialProperties, true);
+  var currentNode = new Module(moduleObject, moduleSettings.module);
   currentNode.initializeProperties(moduleSettings.properties);
 
   _async.forEachOf(moduleSettings.child_containers, function(containerName, containerIndex, containerCallback){
     _async.forEachOf(moduleSettings.children[containerName], function(childModule, childIndex, childCallback){
-      var forwardProperties = currentNode.propertylist.map(function(propertyName){
-        return currentNode.properties[propertyName];
-      });
-      var subTree = self.buildSubtree(childModule, forwardProperties);
+      var subTree = self.buildSubtree(childModule);
       currentNode.addChildAt(containerName, childIndex, subTree);
       childCallback(null, childIndex);
     }, function(childError, childResults){
@@ -77,6 +71,14 @@ Project.prototype.buildSubtree = function(moduleId, initialProperties){
   });
 
   return currentNode;
+};
+
+Project.prototype.communicate = function(){
+  this.walkSubtree(function(module, id){
+    if(module.moduleEventInstance !== null && typeof(module.moduleEventInstance.onCommunicate) === 'function'){
+      module.moduleEventInstance.onCommunicate();
+    }
+  });
 };
 
 Project.prototype.render = function(){
