@@ -37,10 +37,7 @@ Project.prototype.walkSubtree = function(callback){
   this.projectTree.walkSubtree("0", callback);
 };
 
-Project.prototype.buildSubtree = function(moduleId, initialProperties){
-  if(typeof(initialProperties) === 'undefined'){
-    initialProperties = [];
-  }
+Project.prototype.buildSubtree = function(moduleId){
   var self = this;
   var moduleSettings = {
     "module": "",
@@ -53,15 +50,11 @@ Project.prototype.buildSubtree = function(moduleId, initialProperties){
 
   var moduleObject = require(modulePath);
   var currentNode = new Module(moduleObject, moduleSettings.module);
-  currentNode.initializeProperties(initialProperties, true);
   currentNode.initializeProperties(moduleSettings.properties);
 
   _async.forEachOf(moduleSettings.child_containers, function(containerName, containerIndex, containerCallback){
     _async.forEachOf(moduleSettings.children[containerName], function(childModule, childIndex, childCallback){
-      var forwardProperties = currentNode.propertylist.map(function(propertyName){
-        return currentNode.properties[propertyName];
-      });
-      var subTree = self.buildSubtree(childModule, forwardProperties);
+      var subTree = self.buildSubtree(childModule);
       currentNode.addChildAt(containerName, childIndex, subTree);
       childCallback(null, childIndex);
     }, function(childError, childResults){

@@ -102,23 +102,18 @@ Module.prototype.getContainers = function(){
   return clist;
 };
 
-Module.prototype.initializeProperties = function(properties, inherited){
-  if(typeof(inherited) === 'undefined'){
-    inherited = false;
-  }
+Module.prototype.initializeProperties = function(properties){
   var self = this;
   properties.forEach(function(property){
     if(typeof(self.properties[property.name]) !== 'undefined'){
-      self.properties[property.name].extend(property).inherited = inherited;
+      self.properties[property.name].extend(property);
     }else{
       self.properties[property.name] = {
         "name": null,
         "type": null,
         "value": null,
-        "readonly": false,
-        "inherited": false
+        "readonly": false
       }.extend(property);
-      self.properties[property.name].inherited = inherited;
       self.propertylist.push(property.name);
     }
   });
@@ -172,11 +167,6 @@ Module.prototype.addChildAt = function(containerId, index, childModule){
   }
 };
 
-//TODO: remove getContainer
-Module.prototype.getContainer = function(containerId){
-  return (typeof(this.containers[containerId]) !== 'undefined') ? this.containers[containerId] : null;
-};
-
 Module.prototype.exportContainers = function(containers, parentId){
   var containerExport = {};
   var self = this;
@@ -207,8 +197,6 @@ Module.prototype.exportProperties = function(){
   return this.propertylist.map(function(propertyId){
     var property = self.properties[propertyId];
     return property;
-  }).filter(function(property){
-    return !property.inherited;
   });
 };
 
@@ -224,17 +212,55 @@ Module.prototype.export = function(parentId){
 };
 
 Module.prototype.propertyLookup = function(propertyName){
+  var localProperty = this.localPropertyLookup(propertyName);
+  if(typeof(localProperty) !== 'undefined'){
+    localProperty.inherited = false;
+    return localProperty;
+  }else{
+    var parentContainer = this.$parentContainer;
+    var parentModule = (parentContainer instanceof Container) ? parentContainer.$parentModule : null;
+    var treeProperty = null;
+    while(parentModule instanceof Module){
+      treeProperty = parentModule.localPropertyLookup(propertyName);
+      if(typeof(treeProperty) !== 'undefined'){
+        treeProperty.inherited = true;
+        return treeProperty;
+      }
+      parentContainer = parentModule.$parentContainer;
+      parentModule = (parentContainer instanceof Container) ? parentContainer.$parentModule : null;
+    }
+  }
+  return null;
+};
+
+Module.prototype.localPropertyLookup = function(propertyName){
   return this.properties[propertyName];
 };
 
+//TODO: local property lookup and set
 Module.prototype.propertySet = function(propertyName, propertyValue){
   var property = this.propertyLookup(propertyName);
   if(property !== null && property.inherited === false){
     property.value = propertyValue;
     return true;
+  }else if(property !== null){
+    return this.localPropertySet(propertyName, property.extend({
+      "value": propertyValue,
+      "inherited": false
+    }));
   }else{
     return false;
   }
+};
+
+Module.prototype.localPropertySet = function(propertyName, propertyData){
+  this.properties[propertyName] = {
+    "name": null,
+    "type": null,
+    "value": null,
+    "readonly": false
+  }.extend(propertyData);
+  return true;
 };
 
 Module.prototype.walkSubtree = function(parentId, mainCallback){
