@@ -73,6 +73,14 @@ Project.prototype.buildSubtree = function(moduleId){
   return currentNode;
 };
 
+Project.prototype.communicate = function(){
+  this.walkSubtree(function(module, id){
+    if(module.moduleEventInstance !== null && typeof(module.moduleEventInstance.onCommunicate) === 'function'){
+      module.moduleEventInstance.onCommunicate();
+    }
+  });
+};
+
 Project.prototype.render = function(){
   return this.projectTree.render();
 };

@@ -24,7 +24,7 @@ ProjectLink.prototype.extend({
     var newModule = this._module.createChild(container, moduleConfig);
     var id = newModule.getPathToRoot();
     newModule.initialize(id, new ProjectLink(this._project, newModule));
-    return newModule;
+    return newModule.moduleEventInstance;
   }
 });
 

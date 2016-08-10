@@ -9,16 +9,14 @@ process.argv.forEach(function(val, index){
     var project = new core.Project(projectData);
     project.initializeTree();
     project.initializeModules();
-    console.log(project.getSubtreeByPath("0"));
     console.log("-------------EXPORT:----------------");
     console.log(JSON.stringify(project.export(), null, 2));
     console.log("-------------RENDER:----------------");
+    project.communicate();
     console.log(project.render());
     console.log("-------------STATS:-----------------");
     project.walkSubtree(function(module, id){
       console.log(id + ": " + module.name);
-      if(typeof(module.moduleEventInstance.onPreRender) === 'function')
-        module.moduleEventInstance.onPreRender();
     });
     console.log("------------------------------------");
   }

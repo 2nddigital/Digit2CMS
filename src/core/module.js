@@ -86,6 +86,7 @@ Module.prototype.initialize = function(id, projectLink){
     this.moduleEventInstance = new DefaultModule(projectLink, id);
   }
   this.moduleEventInstance.link = projectLink;
+  this.moduleEventInstance._id = id;
   if(typeof(this.moduleEventInstance.initialize) === 'function'){
     this.moduleEventInstance.initialize();
   }
@@ -277,7 +278,14 @@ Module.prototype.walkSubtree = function(parentId, mainCallback){
 
 Module.prototype.render = function(){
   var self = this;
-  return this.content.replace(/{(\S+)}/g, function(totalMatch, property){
+  var renderInput = this.content;
+  if(this.moduleEventInstance !== null && typeof(this.moduleEventInstance.onPreRender) === 'function'){
+    renderInput = this.moduleEventInstance.onPreRender(renderInput);
+    if(typeof(renderInput) !== "string"){
+      renderInput = "";
+    }
+  }
+  var sysRenderOutput = renderInput.replace(/{(\S+)}/g, function(totalMatch, property){
     return self.propertyLookup(property).value;
   }).replace(/\/\/(\S+)\\\\/g, function(totalMatch, container){
     if(typeof(self.containers[container]) !== 'undefined' && self.containers[container] !== null){
@@ -286,6 +294,13 @@ Module.prototype.render = function(){
       return "";
     }
   });
+  if(this.moduleEventInstance !== null && typeof(this.moduleEventInstance.onPostRender) === 'function'){
+    sysRenderOutput = this.moduleEventInstance.onPostRender(sysRenderOutput);
+    if(typeof(sysRenderOutput) !== "string"){
+      sysRenderOutput = "";
+    }
+  }
+  return sysRenderOutput;
 };
 
 module.exports = Module;

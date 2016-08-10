@@ -4,5 +4,16 @@
 * it can be used to communicate with other modules in the tree using the getModuleById(module_id) function.
 ***/
 module.exports = function(projectLink, moduleId){
+  this.onPostRender = function(renderOutput){
+    return renderOutput;
+  };
+
+  this.onPreRender = function(renderInput){
+    return renderInput;
+  };
+
+  this.onCommunicate = function(){
+
+  };
   return this;
 };
