@@ -39,6 +39,11 @@ function Module(moduleObject, moduleName){
     }.extend(elem);
   });
 
+  //Load inherited module
+  if(extendedModuleObject.extends !== null){
+    this.$super = Module.create(extendedModuleObject.extends);
+  }
+
   // Load containers from moduleObject into containers object
   if(typeof(extendedModuleObject.containers) !== 'undefined' && Array.isArray(extendedModuleObject.containers)){
     extendedModuleObject.containers.forEach(function(containerObject){
@@ -73,6 +78,10 @@ Module.prototype.getPathToRoot = function(){
 };
 
 Module.prototype.initialize = function(id, projectLink){
+  if(this.$super !== null){
+    this.$super.initialize(id, projectLink);
+  }
+
   if(this.contentFile !== null){
     this.content = _fs.readFileSync(this.contentFile, 'UTF-8');
   }
@@ -349,6 +358,25 @@ Module.prototype.render = function(){
   sysRenderOutput = this.postRenderContent(sysRenderOutput);
 
   return sysRenderOutput;
+};
+
+// Static methods
+Module.create = function(moduleName){
+  var modulePath = _path.resolve(__dirname, "..", "modules", moduleName, "module.json");
+  var fsStat = null;
+
+  try {
+    fsStat = _fs.statSync(modulePath);
+  } catch (e) {
+    return null;
+  }
+
+  if(!fsStat.isFile()){
+    return null;
+  }
+
+  var moduleObject = require(modulePath);
+  return new Module(moduleObject, moduleName);
 };
 
 module.exports = Module;

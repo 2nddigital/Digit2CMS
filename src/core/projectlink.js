@@ -29,6 +29,9 @@ ProjectLink.prototype.extend({
     var id = newModule.getPathToRoot();
     newModule.initialize(id, new ProjectLink(this._project, newModule));
     return newModule.moduleEventInstance;
+  },
+  isType: function(type){
+    return this._module.isType(type);
   }
 });
 
