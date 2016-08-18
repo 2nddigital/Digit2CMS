@@ -5,7 +5,6 @@ var DefaultModule = require("./module.default.js");
 var _async = require('async');
 
 function Module(moduleObject, moduleName){
-  //TODO: extend module object by first initializing the super class. (every function call also checks super class)
   var extendedModuleObject = {
     "name": null,
     "script": null,
@@ -22,7 +21,7 @@ function Module(moduleObject, moduleName){
   this.name = moduleName;
   this.$super = null;
   this.$parentContainer = null;
-  this.content = "";
+  this.content = null;
   this.script = null;
   this.moduleEventInstance = null;
 
@@ -195,6 +194,7 @@ Module.prototype.getSubtreeByPath = function(pathList){
 
 Module.prototype.exportProperties = function(){
   var self = this;
+  var superProperties = [];
   return this.propertylist.map(function(propertyId){
     var property = self.properties[propertyId];
     return property;
@@ -276,15 +276,66 @@ Module.prototype.walkSubtree = function(parentId, mainCallback){
   });
 };
 
-Module.prototype.render = function(){
+Module.prototype.getContent = function(){
+  if(this.content !== null){
+    return this.content;
+  }else{
+    if(this.$super !== null){
+      return this.$super.getContent();
+    }else{
+      return "";
+    }
+  }
+};
+
+Module.prototype.isType = function(typeName){
+  if(this.name == typeName){
+    return true;
+  }else{
+    return (this.$super !== null) ? this.$super.isType(typeName) : false;
+  }
+};
+
+Module.prototype.preRenderContent = function(content){
   var self = this;
-  var renderInput = this.content;
+  var renderInput = content;
+  if(this.$super !== null){
+    renderInput = this.$super.preRenderContent(renderInput);
+  }
+
   if(this.moduleEventInstance !== null && typeof(this.moduleEventInstance.onPreRender) === 'function'){
     renderInput = this.moduleEventInstance.onPreRender(renderInput);
     if(typeof(renderInput) !== "string"){
       renderInput = "";
     }
   }
+
+  return renderInput;
+};
+
+Module.prototype.postRenderContent = function(content){
+  var self = this;
+  var renderInput = content;
+  if(this.$super !== null){
+    renderInput = this.$super.postRenderContent(renderInput);
+  }
+
+  if(this.moduleEventInstance !== null && typeof(this.moduleEventInstance.onPostRender) === 'function'){
+    renderInput = this.moduleEventInstance.onPostRender(renderInput);
+    if(typeof(renderInput) !== "string"){
+      renderInput = "";
+    }
+  }
+
+  return renderInput;
+};
+
+Module.prototype.render = function(){
+  var self = this;
+  var renderInput = this.getContent();
+
+  renderInput = this.preRenderContent(renderInput);
+
   var sysRenderOutput = renderInput.replace(/{(\S+)}/g, function(totalMatch, property){
     return self.propertyLookup(property).value;
   }).replace(/\/\/(\S+)\\\\/g, function(totalMatch, container){
@@ -294,12 +345,9 @@ Module.prototype.render = function(){
       return "";
     }
   });
-  if(this.moduleEventInstance !== null && typeof(this.moduleEventInstance.onPostRender) === 'function'){
-    sysRenderOutput = this.moduleEventInstance.onPostRender(sysRenderOutput);
-    if(typeof(sysRenderOutput) !== "string"){
-      sysRenderOutput = "";
-    }
-  }
+
+  sysRenderOutput = this.postRenderContent(sysRenderOutput);
+
   return sysRenderOutput;
 };
 

@@ -17,6 +17,10 @@ ProjectLink.prototype.extend({
     var p = this.getRawProperty(propertyName);
     return (p !== null) ? p.value : null;
   },
+  getPropertyDefault: function(propertyName, defaultValue){
+    var p = this.getRawProperty(propertyName);
+    return (p !== null) ? p.value : defaultValue;
+  },
   setProperty: function(propertyName, propertyValue){
     return this._module.propertySet(propertyName, propertyValue);
   },
