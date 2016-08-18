@@ -21,6 +21,9 @@ Container.prototype.isSupportedModule = function(module){
     if(this.containerProperties.supports === null || this.containerProperties.supports === "all"){
       return true;
     }else if(Array.isArray(this.containerProperties.supports)){
+      if(this.containerProperties.length === 0){
+        return true;
+      }
       for(var i = 0; i < this.containerProperties.supports; i++){
         if(module.isType(this.containerProperties.supports[i]) === true){
           return true;
