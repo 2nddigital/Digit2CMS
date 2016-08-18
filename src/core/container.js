@@ -16,18 +16,48 @@ function Container(containerObject, parentModule){
   return this;
 }
 
-Container.prototype.addChild = function(childModule){
-  if(childModule instanceof this.Module){
-    childModule.$parentContainer = this;
-    this.modules.push(childModule);
+Container.prototype.isSupportedModule = function(module){
+  if(module instanceof this.Module){
+    if(this.containerProperties.supports === null || this.containerProperties.supports === "all"){
+      return true;
+    }else if(Array.isArray(this.containerProperties.supports)){
+      if(this.containerProperties.length === 0){
+        return true;
+      }
+      for(var i = 0; i < this.containerProperties.supports; i++){
+        if(module.isType(this.containerProperties.supports[i]) === true){
+          return true;
+        }
+      }
+      return false;
+    }else{
+      return true;
+    }
+  }else{
+    return false;
   }
 };
 
+Container.prototype.addChild = function(childModule){
+  if(this.isSupportedModule(childModule) && this.hasCapacity(this.modules.length)){
+    childModule.$parentContainer = this;
+    this.modules.push(childModule);
+    return true;
+  }
+  return false;
+};
+
+Container.prototype.hasCapacity = function(cap){
+  return this.containerProperties.size < 1 || (cap < this.containerProperties.size);
+};
+
 Container.prototype.addChildAt = function(index, childModule){
-  if(childModule instanceof this.Module){
+  if(this.isSupportedModule(childModule) && this.hasCapacity(Math.max(index, this.modules.length))){
     childModule.$parentContainer = this;
     this.modules[index] = childModule;
+    return true;
   }
+  return false;
 };
 
 Container.prototype.walkSubtree = function(parentId, callback){

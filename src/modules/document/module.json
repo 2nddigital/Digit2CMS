@@ -5,12 +5,12 @@
   "containers": [
     {
       "id": "head",
-      "supports": [],
+      "supports": null,
       "size": 0
     },
     {
       "id": "body",
-      "supports": [],
+      "supports": null,
       "size": 0
     }
   ]

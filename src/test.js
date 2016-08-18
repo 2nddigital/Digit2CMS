@@ -20,6 +20,4 @@ process.argv.forEach(function(val, index){
     });
     console.log("------------------------------------");
   }
-
-  console.log(core.Types.checkType("75.3%", "percentage"));
 });

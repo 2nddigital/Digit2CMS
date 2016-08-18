@@ -2,7 +2,7 @@
   "name": "listitem",
   "script": "listitem.js",
   "content": "listitem.data",
-  "extends": "block",
+  "extends": "text",
   "properties": [
     {
       "name": "image",
@@ -24,9 +24,7 @@
   "containers": [
     {
       "id": "content",
-      "supports": [
-        "text"
-      ],
+      "supports": null,
       "size": 0
     }
   ]

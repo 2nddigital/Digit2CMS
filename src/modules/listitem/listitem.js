@@ -6,12 +6,13 @@ var Module = require('../../core/module.js');
 ***/
 module.exports = function(projectLink, moduleId){
   this.initialize = function(){
-    
+
   };
 
   this.onPreRender = function(input){
     for(var i = 0; i < this.link.getProperty("items"); i++){
-      this.link.createModule("content", {"module": "text"}).link.setProperty("content", "item: " + i);
+      var newmodule = this.link.createModule("content", {"module": "text"}).link;
+      newmodule.setProperty("content", "item: " + i);
     }
     this.link.getModule("0-body-0-content-1").test();
     return input;

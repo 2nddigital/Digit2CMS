@@ -17,6 +17,10 @@ ProjectLink.prototype.extend({
     var p = this.getRawProperty(propertyName);
     return (p !== null) ? p.value : null;
   },
+  getPropertyDefault: function(propertyName, defaultValue){
+    var p = this.getRawProperty(propertyName);
+    return (p !== null) ? p.value : defaultValue;
+  },
   setProperty: function(propertyName, propertyValue){
     return this._module.propertySet(propertyName, propertyValue);
   },
@@ -25,6 +29,9 @@ ProjectLink.prototype.extend({
     var id = newModule.getPathToRoot();
     newModule.initialize(id, new ProjectLink(this._project, newModule));
     return newModule.moduleEventInstance;
+  },
+  isType: function(type){
+    return this._module.isType(type);
   }
 });
 

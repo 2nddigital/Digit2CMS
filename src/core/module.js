@@ -5,7 +5,6 @@ var DefaultModule = require("./module.default.js");
 var _async = require('async');
 
 function Module(moduleObject, moduleName){
-  //TODO: extend module object by first initializing the super class. (every function call also checks super class)
   var extendedModuleObject = {
     "name": null,
     "script": null,
@@ -22,7 +21,7 @@ function Module(moduleObject, moduleName){
   this.name = moduleName;
   this.$super = null;
   this.$parentContainer = null;
-  this.content = "";
+  this.content = null;
   this.script = null;
   this.moduleEventInstance = null;
 
@@ -39,6 +38,11 @@ function Module(moduleObject, moduleName){
       "inherited": false
     }.extend(elem);
   });
+
+  //Load inherited module
+  if(extendedModuleObject.extends !== null){
+    this.$super = Module.create(extendedModuleObject.extends);
+  }
 
   // Load containers from moduleObject into containers object
   if(typeof(extendedModuleObject.containers) !== 'undefined' && Array.isArray(extendedModuleObject.containers)){
@@ -74,6 +78,10 @@ Module.prototype.getPathToRoot = function(){
 };
 
 Module.prototype.initialize = function(id, projectLink){
+  if(this.$super !== null){
+    this.$super.initialize(id, projectLink);
+  }
+
   if(this.contentFile !== null){
     this.content = _fs.readFileSync(this.contentFile, 'UTF-8');
   }
@@ -195,6 +203,7 @@ Module.prototype.getSubtreeByPath = function(pathList){
 
 Module.prototype.exportProperties = function(){
   var self = this;
+  var superProperties = [];
   return this.propertylist.map(function(propertyId){
     var property = self.properties[propertyId];
     return property;
@@ -214,7 +223,7 @@ Module.prototype.export = function(parentId){
 
 Module.prototype.propertyLookup = function(propertyName){
   var localProperty = this.localPropertyLookup(propertyName);
-  if(typeof(localProperty) !== 'undefined'){
+  if(localProperty !== null && localProperty.value !== null){
     localProperty.inherited = false;
     return localProperty;
   }else{
@@ -223,7 +232,7 @@ Module.prototype.propertyLookup = function(propertyName){
     var treeProperty = null;
     while(parentModule instanceof Module){
       treeProperty = parentModule.localPropertyLookup(propertyName);
-      if(typeof(treeProperty) !== 'undefined'){
+      if(treeProperty !== null && treeProperty.value !== null){
         treeProperty.inherited = true;
         return treeProperty;
       }
@@ -235,12 +244,13 @@ Module.prototype.propertyLookup = function(propertyName){
 };
 
 Module.prototype.localPropertyLookup = function(propertyName){
-  return this.properties[propertyName];
+  var localProperty = this.properties[propertyName];
+  return (typeof(localProperty) !== "undefined") ? localProperty : null;
 };
 
 //TODO: local property lookup and set
 Module.prototype.propertySet = function(propertyName, propertyValue){
-  var property = this.propertyLookup(propertyName);
+  var property = this.localPropertyLookup(propertyName);
   if(property !== null && property.inherited === false){
     property.value = propertyValue;
     return true;
@@ -276,17 +286,69 @@ Module.prototype.walkSubtree = function(parentId, mainCallback){
   });
 };
 
-Module.prototype.render = function(){
+Module.prototype.getContent = function(){
+  if(this.content !== null){
+    return this.content;
+  }else{
+    if(this.$super !== null){
+      return this.$super.getContent();
+    }else{
+      return "";
+    }
+  }
+};
+
+Module.prototype.isType = function(typeName){
+  if(this.name == typeName){
+    return true;
+  }else{
+    return (this.$super !== null) ? this.$super.isType(typeName) : false;
+  }
+};
+
+Module.prototype.preRenderContent = function(content){
   var self = this;
-  var renderInput = this.content;
+  var renderInput = content;
+  if(this.$super !== null){
+    renderInput = this.$super.preRenderContent(renderInput);
+  }
+
   if(this.moduleEventInstance !== null && typeof(this.moduleEventInstance.onPreRender) === 'function'){
     renderInput = this.moduleEventInstance.onPreRender(renderInput);
     if(typeof(renderInput) !== "string"){
       renderInput = "";
     }
   }
+
+  return renderInput;
+};
+
+Module.prototype.postRenderContent = function(content){
+  var self = this;
+  var renderInput = content;
+  if(this.$super !== null){
+    renderInput = this.$super.postRenderContent(renderInput);
+  }
+
+  if(this.moduleEventInstance !== null && typeof(this.moduleEventInstance.onPostRender) === 'function'){
+    renderInput = this.moduleEventInstance.onPostRender(renderInput);
+    if(typeof(renderInput) !== "string"){
+      renderInput = "";
+    }
+  }
+
+  return renderInput;
+};
+
+Module.prototype.render = function(){
+  var self = this;
+  var renderInput = this.getContent();
+
+  renderInput = this.preRenderContent(renderInput);
+
   var sysRenderOutput = renderInput.replace(/{(\S+)}/g, function(totalMatch, property){
-    return self.propertyLookup(property).value;
+    var foundProperty = self.propertyLookup(property);
+    return foundProperty !== null ? foundProperty.value : "";
   }).replace(/\/\/(\S+)\\\\/g, function(totalMatch, container){
     if(typeof(self.containers[container]) !== 'undefined' && self.containers[container] !== null){
       return self.containers[container].render();
@@ -294,13 +356,29 @@ Module.prototype.render = function(){
       return "";
     }
   });
-  if(this.moduleEventInstance !== null && typeof(this.moduleEventInstance.onPostRender) === 'function'){
-    sysRenderOutput = this.moduleEventInstance.onPostRender(sysRenderOutput);
-    if(typeof(sysRenderOutput) !== "string"){
-      sysRenderOutput = "";
-    }
-  }
+
+  sysRenderOutput = this.postRenderContent(sysRenderOutput);
+
   return sysRenderOutput;
+};
+
+// Static methods
+Module.create = function(moduleName){
+  var modulePath = _path.resolve(__dirname, "..", "modules", moduleName, "module.json");
+  var fsStat = null;
+
+  try {
+    fsStat = _fs.statSync(modulePath);
+  } catch (e) {
+    return null;
+  }
+
+  if(!fsStat.isFile()){
+    return null;
+  }
+
+  var moduleObject = require(modulePath);
+  return new Module(moduleObject, moduleName);
 };
 
 module.exports = Module;

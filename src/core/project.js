@@ -46,29 +46,28 @@ Project.prototype.buildSubtree = function(moduleId){
     "children": {}
   }.extend(this.projectData[moduleId]);
 
-  var modulePath = _path.resolve(__dirname, "..", "modules", moduleSettings.module, "module.json");
+  var currentNode = Module.create(moduleSettings.module);
+  if(currentNode !== null){
+    currentNode.initializeProperties(moduleSettings.properties);
 
-  var moduleObject = require(modulePath);
-  var currentNode = new Module(moduleObject, moduleSettings.module);
-  currentNode.initializeProperties(moduleSettings.properties);
-
-  _async.forEachOf(moduleSettings.child_containers, function(containerName, containerIndex, containerCallback){
-    _async.forEachOf(moduleSettings.children[containerName], function(childModule, childIndex, childCallback){
-      var subTree = self.buildSubtree(childModule);
-      currentNode.addChildAt(containerName, childIndex, subTree);
-      childCallback(null, childIndex);
-    }, function(childError, childResults){
-      if(!childError){
-        containerCallback(null, containerName);
-      }else{
+    _async.forEachOf(moduleSettings.child_containers, function(containerName, containerIndex, containerCallback){
+      _async.forEachOf(moduleSettings.children[containerName], function(childModule, childIndex, childCallback){
+        var subTree = self.buildSubtree(childModule);
+        currentNode.addChildAt(containerName, childIndex, subTree);
+        childCallback(null, childIndex);
+      }, function(childError, childResults){
+        if(!childError){
+          containerCallback(null, containerName);
+        }else{
+          console.log("something wrong?");
+        }
+      });
+    }, function(containerError, containerResults){
+      if(containerError){
         console.log("something wrong?");
       }
     });
-  }, function(containerError, containerResults){
-    if(containerError){
-      console.log("something wrong?");
-    }
-  });
+  }  
 
   return currentNode;
 };
