@@ -223,7 +223,7 @@ Module.prototype.export = function(parentId){
 
 Module.prototype.propertyLookup = function(propertyName){
   var localProperty = this.localPropertyLookup(propertyName);
-  if(typeof(localProperty) !== 'undefined'){
+  if(localProperty !== null && localProperty.value !== null){
     localProperty.inherited = false;
     return localProperty;
   }else{
@@ -232,7 +232,7 @@ Module.prototype.propertyLookup = function(propertyName){
     var treeProperty = null;
     while(parentModule instanceof Module){
       treeProperty = parentModule.localPropertyLookup(propertyName);
-      if(typeof(treeProperty) !== 'undefined'){
+      if(treeProperty !== null && treeProperty.value !== null){
         treeProperty.inherited = true;
         return treeProperty;
       }
@@ -244,12 +244,13 @@ Module.prototype.propertyLookup = function(propertyName){
 };
 
 Module.prototype.localPropertyLookup = function(propertyName){
-  return this.properties[propertyName];
+  var localProperty = this.properties[propertyName];
+  return (typeof(localProperty) !== "undefined") ? localProperty : null;
 };
 
 //TODO: local property lookup and set
 Module.prototype.propertySet = function(propertyName, propertyValue){
-  var property = this.propertyLookup(propertyName);
+  var property = this.localPropertyLookup(propertyName);
   if(property !== null && property.inherited === false){
     property.value = propertyValue;
     return true;
@@ -346,7 +347,8 @@ Module.prototype.render = function(){
   renderInput = this.preRenderContent(renderInput);
 
   var sysRenderOutput = renderInput.replace(/{(\S+)}/g, function(totalMatch, property){
-    return self.propertyLookup(property).value;
+    var foundProperty = self.propertyLookup(property);
+    return foundProperty !== null ? foundProperty.value : "";
   }).replace(/\/\/(\S+)\\\\/g, function(totalMatch, container){
     if(typeof(self.containers[container]) !== 'undefined' && self.containers[container] !== null){
       return self.containers[container].render();
