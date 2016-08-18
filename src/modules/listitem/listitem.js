@@ -10,7 +10,6 @@ module.exports = function(projectLink, moduleId){
   };
 
   this.onPreRender = function(input){
-
     for(var i = 0; i < this.link.getProperty("items"); i++){
       this.link.createModule("content", {"module": "text"}).link.setProperty("content", "item: " + i);
     }

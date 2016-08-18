@@ -5,9 +5,7 @@
   "containers": [
     {
       "id": "content",
-      "supports": [
-        "listitem"
-      ],
+      "supports": null,
       "size": 0
     }
   ]
