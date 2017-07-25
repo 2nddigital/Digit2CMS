@@ -1,0 +1,43 @@
+<!-- Start: Header Section
+  ================================ -->
+  <section class="header-section-1 bg-image-1 header-js" id="headersection" >
+    <div class="overlay-color">
+      <div class="container">
+        <div class="row section-separator">
+
+          <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1">
+            <div class="part-inner text-center">
+
+              <!--  Header SubTitle Goes here -->
+              <!--<h1 class="title"><strong><img src="images/emblem.png" alt="" ></strong></h1>-->
+              <br><br><br><br><br><br><br>
+              <section class="cd-intro">
+		<h3 class="cd-headline clip is-full-width title">
+			<span>Wij bieden u professionele</span>
+			<span class="cd-words-wrapper waiting">
+				<b class="is-visible">Websites</b>
+				<b>Logo's</b>
+				<b>Visitekaartjes</b>
+			</span>
+		</h3>
+	</section>
+            <!-- DETAILS
+              <div class="detail">
+                <p>Wij bieden u professionele websites, huisstijlen, drukwerk en nog veel meer!</p>
+              </div>
+              -->
+
+              <!-- Button Area -->
+              <div class="btn-form btn-scroll">
+                <a href="#laatste-project" class="btn btn-border">Onze Projecten</a>
+              </div>
+
+            </div>
+          </div> <!-- End: .part-1 -->
+
+        </div> <!-- End: .row -->
+      </div> <!-- End: .container -->
+    </div> <!-- End: .overlay-color -->
+  </section>
+  <!-- End: Header Section
+  ================================ -->

@@ -1,4 +1,52 @@
 {
   "name": "metatag",
-  "content": "meta.data"
+  "content": "meta.data",
+  "script": "meta.js",
+  "properties": [
+  	{
+  		"name": "name",
+  		"type": "string"
+  	},
+  	{
+  		"name": "content",
+  		"type": "string"
+  	},
+	{
+  		"name": "property",
+  		"type": "string"
+  	},
+  	{
+  		"name": "charset",
+  		"type": "string"
+  	},
+  	{
+  		"name": "http-equiv",
+  		"type": "string"
+  	},
+  	{
+  		"name": "rw-name",
+  		"type": "string",
+  		"readonly": true
+  	},
+  	{
+  		"name": "rw-content",
+  		"type": "string",
+  		"readonly": true
+  	},
+	{
+  		"name": "rw-property",
+  		"type": "string",
+  		"readonly": true
+  	},
+  	{
+  		"name": "rw-charset",
+  		"type": "string",
+  		"readonly": true
+  	},
+  	{
+  		"name": "rw-http-equiv",
+  		"type": "string",
+  		"readonly": true
+  	}
+  ]
 }

@@ -1,0 +1,67 @@
+<!-- Start: Footer Section 1
+  ================================== -->
+  <footer class="footer-section background-dark" id="footer">
+    <div class="container">
+      <div class="row">
+
+        <div class="footer-header">
+          <div class="section-separator">
+
+            <div class="each-section col-sm-4 col-xs-12">
+
+              <p class="title"><strong>Onze diensten</strong></p>
+              <ul class="nav link-list">
+                <li><a href="#footer">Webdesign</a></li>
+                <li><a href="#footer">Branding</a></li>
+                <li><a href="#footer">Drukwerk</a></li>
+                <li><a href="#footer">Verspreiding</a></li>
+                <li><a href="algemenevoorwaarden.pdf">Algemene Voorwaarden</a></li>
+              </ul>
+
+            </div> <!-- End: .each-section -->
+            <div class="each-section col-sm-4 col-xs-12">
+
+              <p class="title"><strong>Website</strong></p>
+              <ul class="nav link-list">
+                <li><a href="#over-ons">Over ons</a></li>
+                <li><a href="#onze-beloftes">Onze beloftes</a></li>
+                <li><a href="#laatste-project">Ons laatste project</a></li>
+                <li><a href="#wat-we-doen">Wat we doen</a></li>
+                <li><a href="#onze-klanten">Onze klanten</a></li>
+                <li><a href="disclaimer.html">Disclaimer</a></li>
+              </ul>
+
+            </div> <!-- End: .each-section -->
+            <div class="each-section col-sm-4 col-xs-12">
+
+              <p class="title"><strong>Contact</strong></p>
+              <ul class="nav link-list">
+                <li>Bleekweg 6, Meijel</li>
+                <li><a href="callto:18562361853">Bel ons: 06 3108 6074</a></li>
+                <li><a href="mailto:info@2nddigital.nl">info@2nddigital.nl</a></li>
+              </ul>
+              
+              <ul class="nav">
+                <li>
+                  <div class="li-inner">
+                    <ul class="nav social-icon">
+                      <li><a href="https://github.com/orgs/2nddigital" target="_blank"><i class="icon icons8-github"></i></a></li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+
+            </div> <!-- End: .each-section -->
+
+          </div>
+        </div> <!-- End: .footer-header -->
+
+        <div class="copyright text-center col-xs-12 light-text">
+          <p>Copyright &copy; 2nd Digital 2016, All rights reserved.</p>
+        </div> <!-- End: .copyright -->
+
+      </div><!-- End: .section-separator  -->
+    </div> <!-- End: .container  -->
+  </footer>
+  <!-- End: Footer Section 1
+  ================================== -->

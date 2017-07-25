@@ -1,0 +1,27 @@
+{
+  "name": "script",
+  "content": "script.data",
+  "script": "script.js",
+  "properties": [
+    {
+      "name": "src",
+      "type": "url"
+    },
+    {
+      "name": "rw-src",
+      "type": "url",
+      "readonly": true
+    },
+    {
+      "name": "script",
+      "type": "string"
+    }
+  ],
+  "containers": [
+    {
+      "id": "script",
+      "supports": "text",
+      "size": 0
+    }
+  ]
+}

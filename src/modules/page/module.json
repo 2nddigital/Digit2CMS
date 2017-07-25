@@ -1,11 +1,19 @@
 {
   "name": "page",
   "content": "page.data",
+  "script": "page.js",
   "containers": [
     {
       "id": "content",
       "supports": null,
       "size": 1
     }
+  ],
+  "properties": [
+  	{
+  		"name": "filename",
+  		"type": "string",
+  		"value": "out.html"
+  	}
   ]
 }
