@@ -27,8 +27,8 @@
   },
   "homepage": "https://github.com/timbeurskens/Digit2CMS#readme",
   "dependencies": {
-    "async": "^2.0.1",
-    "promise": "^7.1.1",
-    "validator": "^5.5.0"
+    "async": "^2.5.0",
+    "promise": "^7.3.1",
+    "validator": "^5.7.0"
   }
 }

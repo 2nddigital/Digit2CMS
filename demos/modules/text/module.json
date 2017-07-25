@@ -1,9 +1,0 @@
-{
-  "content": "text.data",
-  "properties": [
-    {
-      "name": "content",
-      "type": "text"
-    },
-  ]
-}

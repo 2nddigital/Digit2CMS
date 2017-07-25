@@ -1,7 +1,6 @@
+var _core = module.parent.exports;
 var _path = require("path");
 var _fs = require("fs");
-var Container = require('./container.js');
-var DefaultModule = require("./module.default.js");
 var _async = require('async');
 
 function Module(moduleObject, moduleName){
@@ -48,7 +47,7 @@ function Module(moduleObject, moduleName){
   if(typeof(extendedModuleObject.containers) !== 'undefined' && Array.isArray(extendedModuleObject.containers)){
     extendedModuleObject.containers.forEach(function(containerObject){
       if(typeof(containerObject.id) !== 'undefined'){
-        self.containers[containerObject.id] = new Container(containerObject, self);
+        self.containers[containerObject.id] = new module.parent.exports.Container(containerObject, self);
       }
     });
   }
@@ -60,7 +59,7 @@ Module.prototype.getPathToRoot = function(){
   var currentNode = this;
   var newNode = null;
   var path = "";
-  while(currentNode instanceof Module || currentNode instanceof Container){
+  while(currentNode instanceof Module || currentNode instanceof module.parent.exports.Container){
     if(currentNode instanceof Module){
       newNode = currentNode.$parentContainer;
       if(newNode !== null){
@@ -69,7 +68,7 @@ Module.prototype.getPathToRoot = function(){
         path = "0-" + path;
       }
       currentNode = newNode;
-    }else if(currentNode instanceof Container){
+    }else if(currentNode instanceof module.parent.exports.Container){
       currentNode = currentNode.$parentModule;
     }
   }
@@ -91,7 +90,7 @@ Module.prototype.initialize = function(id, projectLink){
   if(typeof(this.script) === 'function'){
     this.moduleEventInstance = new this.script(projectLink, id);
   }else{
-    this.moduleEventInstance = new DefaultModule(projectLink, id);
+    this.moduleEventInstance = new module.parent.exports.DefaultModule(projectLink, id);
   }
   this.moduleEventInstance.link = projectLink;
   this.moduleEventInstance._id = id;
@@ -130,7 +129,7 @@ Module.prototype.initializeProperties = function(properties){
 
 Module.prototype.addChild = function(containerId, childModule){
   if(childModule instanceof Module){
-    if(typeof(this.containers[containerId]) !== 'undefined' && (this.containers[containerId] instanceof Container)){
+    if(typeof(this.containers[containerId]) !== 'undefined' && (this.containers[containerId] instanceof module.parent.exports.Container)){
       this.containers[containerId].addChild(childModule);
     }
   }
@@ -151,7 +150,7 @@ Module.prototype.createChild = function(containerId, childProperties){
 
   var modulePath = _path.resolve(__dirname, "..", "modules", extendedChildProperties.module, "module.json");
 
-  if(typeof(this.containers[containerId]) !== 'undefined' && (this.containers[containerId] instanceof Container)){
+  if(typeof(this.containers[containerId]) !== 'undefined' && (this.containers[containerId] instanceof module.parent.exports.Container)){
     var initialProperties = this.propertylist.map(function(propertyName){
       return self.properties[propertyName];
     });
@@ -170,7 +169,7 @@ Module.prototype.createChild = function(containerId, childProperties){
 
 Module.prototype.addChildAt = function(containerId, index, childModule){
   if(childModule instanceof Module){
-    if(typeof(this.containers[containerId]) !== 'undefined' && (this.containers[containerId] instanceof Container)){
+    if(typeof(this.containers[containerId]) !== 'undefined' && (this.containers[containerId] instanceof module.parent.exports.Container)){
       this.containers[containerId].addChildAt(index, childModule);
     }
   }
@@ -228,7 +227,7 @@ Module.prototype.propertyLookup = function(propertyName){
     return localProperty;
   }else{
     var parentContainer = this.$parentContainer;
-    var parentModule = (parentContainer instanceof Container) ? parentContainer.$parentModule : null;
+    var parentModule = (parentContainer instanceof module.parent.exports.Container) ? parentContainer.$parentModule : null;
     var treeProperty = null;
     while(parentModule instanceof Module){
       treeProperty = parentModule.localPropertyLookup(propertyName);
@@ -237,7 +236,7 @@ Module.prototype.propertyLookup = function(propertyName){
         return treeProperty;
       }
       parentContainer = parentModule.$parentContainer;
-      parentModule = (parentContainer instanceof Container) ? parentContainer.$parentModule : null;
+      parentModule = (parentContainer instanceof module.parent.exports.Container) ? parentContainer.$parentModule : null;
     }
   }
   return null;
@@ -364,7 +363,7 @@ Module.prototype.render = function(){
 
 // Static methods
 Module.create = function(moduleName){
-  var modulePath = _path.resolve(__dirname, "..", "modules", moduleName, "module.json");
+  var modulePath = _path.resolve(module.parent.exports.Root, "..", "modules", moduleName, "module.json");
   var fsStat = null;
 
   try {
@@ -377,7 +376,10 @@ Module.create = function(moduleName){
     return null;
   }
 
+  console.log(modulePath);
+
   var moduleObject = require(modulePath);
+
   return new Module(moduleObject, moduleName);
 };
 
