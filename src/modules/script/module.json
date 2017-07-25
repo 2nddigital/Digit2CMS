@@ -1,0 +1,17 @@
+{
+  "name": "script",
+  "content": "script.data",
+  "properties": [
+    {
+      "name": "src",
+      "type": "url"
+    }
+  ],
+  "containers": [
+    {
+      "id": "script",
+      "supports": "text",
+      "size": 0
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 require("./core/proto.js");
 var core = require("./core/core.js");
 var _path = require("path");
+var fs = require("fs");
 
 
 process.argv.forEach(function(val, index){
@@ -11,7 +12,9 @@ process.argv.forEach(function(val, index){
     project.initializeTree();
     project.initializeModules();
     console.log("-------------EXPORT:----------------");
-    console.log(JSON.stringify(project.export(), null, 2));
+    var exportProjectData = JSON.stringify(project.export(), null, 2);
+    console.log(exportProjectData);
+    fs.writeFile(projectDataPath, exportProjectData);
     console.log("-------------RENDER:----------------");
     project.communicate();
     console.log(project.render());
