@@ -1,9 +1,10 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="{lang}">
 <head>
 //head\\
 </head>
-<body>
+<body class="{bodyclass}">
 //body\\
+//script\\
 </body>
 </html>

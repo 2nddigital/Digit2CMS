@@ -1,0 +1,11 @@
+{
+  "name": "page",
+  "content": "page.data",
+  "containers": [
+    {
+      "id": "content",
+      "supports": null,
+      "size": 1
+    }
+  ]
+}
