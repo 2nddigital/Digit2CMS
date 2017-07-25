@@ -1,7 +1,16 @@
 {
   "name": "document",
   "content": "document.data",
-  "properties": [],
+  "properties": [
+    {
+      "name": "lang",
+      "type": "string"
+    },
+    {
+      "name": "bodyclass",
+      "type": "classlist"
+    }
+  ],
   "containers": [
     {
       "id": "head",
@@ -11,6 +20,11 @@
     {
       "id": "body",
       "supports": null,
+      "size": 0
+    },
+    {
+      "id": "script",
+      "supports": "script",
       "size": 0
     }
   ]
