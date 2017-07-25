@@ -11,6 +11,10 @@
       "name": "rw-src",
       "type": "url",
       "readonly": true
+    },
+    {
+      "name": "script",
+      "type": "string"
     }
   ],
   "containers": [
