@@ -1,5 +1,3 @@
-var Module = require('./module.js');
-
 function ProjectLink(project, currentModule){
   this._project = project;
   this._module = currentModule;
@@ -8,7 +6,7 @@ function ProjectLink(project, currentModule){
 ProjectLink.prototype.extend({
   getModule: function(path){
     var subTree = this._project.getSubtreeByPath(path);
-    return (subTree instanceof Module) ? subTree.moduleEventInstance : null;
+    return (subTree instanceof module.parent.exports.Module) ? subTree.moduleEventInstance : null;
   },
   getRawProperty: function(propertyName){
     return this._module.propertyLookup(propertyName);
@@ -27,7 +25,7 @@ ProjectLink.prototype.extend({
   createModule: function(container, moduleConfig){
     var newModule = this._module.createChild(container, moduleConfig);
     var id = newModule.getPathToRoot();
-    newModule.initialize(id, new ProjectLink(this._project, newModule));
+    newModule.initialize(id, new module.parent.exports.ProjectLink(this._project, newModule));
     return newModule.moduleEventInstance;
   },
   isType: function(type){

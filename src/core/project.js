@@ -1,7 +1,6 @@
 var _async = require("async");
 var _path = require("path");
-var Module = require('./module.js');
-var ProjectLink = require('./projectlink.js');
+var util = require('util');
 
 function Project(projectObject){
   var self = this;
@@ -25,8 +24,9 @@ Project.prototype.initializeTree = function(){
 
 Project.prototype.initializeModules = function(){
   var self = this;
+  var parent = module.parent.exports;
   this.walkSubtree(function(module, id){
-    module.initialize(id, new ProjectLink(self, module));
+    module.initialize(id, new parent.ProjectLink(self, module));
   });
 };
 
@@ -45,8 +45,8 @@ Project.prototype.buildSubtree = function(moduleId){
     "child_containers": [],
     "children": {}
   }.extend(this.projectData[moduleId]);
-
-  var currentNode = Module.create(moduleSettings.module);
+ 
+  var currentNode = module.parent.exports.Module.create(moduleSettings.module);
   if(currentNode !== null){
     currentNode.initializeProperties(moduleSettings.properties);
 

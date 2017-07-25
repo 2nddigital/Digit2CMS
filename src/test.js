@@ -2,6 +2,7 @@ require("./core/proto.js");
 var core = require("./core/core.js");
 var _path = require("path");
 
+
 process.argv.forEach(function(val, index){
   if(index > 1){
     var projectDataPath = _path.resolve(process.cwd(), val);

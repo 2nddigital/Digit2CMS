@@ -1,3 +1,4 @@
+var _core = module.parent.exports;
 var _async = require('async');
 
 function Container(containerObject, parentModule){

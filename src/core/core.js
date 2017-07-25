@@ -1,4 +1,5 @@
 module.exports = {
+  Root: __dirname,
   Module: require("./module.js"),
   Project: require("./project.js"),
   Container: require("./container.js"),
