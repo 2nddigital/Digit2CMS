@@ -3,7 +3,8 @@
     "module": "document",
     "child_containers": [
       "head",
-      "body"
+      "body",
+      "script"
     ],
     "children": {
       "head": [
@@ -11,9 +12,25 @@
       ],
       "body": [
         "0-body-0"
-      ]
+      ],
+      "script": []
     },
-    "properties": []
+    "properties": [
+      {
+        "name": "lang",
+        "type": "string",
+        "value": null,
+        "readonly": false,
+        "inherited": false
+      },
+      {
+        "name": "bodyclass",
+        "type": "classlist",
+        "value": null,
+        "readonly": false,
+        "inherited": false
+      }
+    ]
   },
   "0-head-0": {
     "module": "text",

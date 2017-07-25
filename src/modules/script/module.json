@@ -1,10 +1,16 @@
 {
   "name": "script",
   "content": "script.data",
+  "script": "script.js",
   "properties": [
     {
       "name": "src",
       "type": "url"
+    },
+    {
+      "name": "rw-src",
+      "type": "url",
+      "readonly": true
     }
   ],
   "containers": [
