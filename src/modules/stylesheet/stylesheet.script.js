@@ -13,8 +13,6 @@ module.exports = function(projectLink, moduleId){
   };
 
   this.addCSS = function(cssContent) {
-    console.log("adding: " + cssContent);
-
     var txtCssModule = this.link.createModule("content", {"module": "text"}).link;
     txtCssModule.setProperty("content", cssContent);
   };

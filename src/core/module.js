@@ -246,6 +246,14 @@ Module.prototype.propertyLookup = function(propertyName){
 };
 
 Module.prototype.localPropertyLookup = function(propertyName){
+  if (propertyName === "__id__") {
+    return {
+      name: "__id__",
+      value: this.moduleEventInstance._id,
+      type: "module"
+    };
+  }
+
   var localProperty = this.properties[propertyName];
   return (typeof(localProperty) !== "undefined") ? localProperty : null;
 };
@@ -349,7 +357,7 @@ Module.prototype.postRenderContent = function(content){
 
 Module.prototype.propertyRender = function(input) {
   var self = this;
-  
+
   return input.replace(/{([A-Za-z0-9-_]+)}/g, function(totalMatch, property) {
     var foundProperty = self.propertyLookup(property);
     return foundProperty !== null ? foundProperty.value : "";

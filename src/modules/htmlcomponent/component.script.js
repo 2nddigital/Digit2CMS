@@ -6,17 +6,24 @@
 * HTML component module:
 * requires global properties:
 * __global__stylesheet
+* __global__script
 ***/
 module.exports = function(projectLink, moduleId){
   this.onCommunicate = function() {
-    console.log("onCommunicate called");
-
     var stylesheetModule = this.link.getProperty("__global__stylesheet");
+    var cssContent = this.link.getProperty("css");
 
-    if(stylesheetModule != null) {
-      var cssContent = this.link.getProperty("css");
+    if(stylesheetModule != null && cssContent != null) {      
       var cssOutputContent = this.link.render(cssContent);
       this.link.getModule(stylesheetModule).addCSS(cssOutputContent);
+    }
+
+    var scriptModule = this.link.getProperty("__global__script");
+    var scriptContent = this.link.getProperty("js");
+
+    if(scriptModule != null && scriptContent != null){
+      var scriptOutputContent = this.link.render(scriptContent);
+      this.link.getModule(scriptModule).addJS(scriptOutputContent);
     }
   };
 

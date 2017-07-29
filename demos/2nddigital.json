@@ -15,6 +15,13 @@
         "value": "0-content-0-head-2",
         "readonly": true,
         "inherited": true
+      },
+      {
+        "name": "__global__script",
+        "type": "module",
+        "value": "0-content-0-script-4",
+        "readonly": false,
+        "inherited": false
       }
     ],
     "child_containers": [
@@ -282,7 +289,7 @@
       {
         "name": "css",
         "type": "string",
-        "value": ".main-navbar-top {background: {bgcolor};}",
+        "value": ".id-{__id__} {background: {bgcolor};}",
         "readonly": false,
         "inherited": false
       },
@@ -290,6 +297,13 @@
         "name": "bgcolor",
         "type": "string",
         "value": "#00FF00",
+        "readonly": false,
+        "inherited": false
+      },
+      {
+        "name": "js",
+        "type": null,
+        "value": "alert('it works');",
         "readonly": false,
         "inherited": false
       }

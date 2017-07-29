@@ -12,5 +12,10 @@ module.exports = function(projectLink, moduleId){
     return input;
   };
 
+  this.addJS = function(src){
+    var txtJsModule = this.link.createModule("script", {"module": "text"}).link;
+    txtJsModule.setProperty("content", src);
+  };
+
   return this;
 };

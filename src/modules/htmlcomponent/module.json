@@ -6,6 +6,10 @@
     {
       "name": "css",
       "type": "string"
+    },
+    {
+      "name": "js",
+      "type": "string"
     }
   ],
   "containers": [
