@@ -1,6 +1,7 @@
 {
   "name": "2nddigital-footer",
   "content": "footer.data",
+  "extends": "htmlcomponent",
   "properties": [],
   "containers": []
 }

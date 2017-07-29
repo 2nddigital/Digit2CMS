@@ -303,7 +303,7 @@
       {
         "name": "js",
         "type": null,
-        "value": "alert('it works');",
+        "value": "alert('hello from module {__id__}');",
         "readonly": false,
         "inherited": false
       }

@@ -33,6 +33,9 @@ ProjectLink.prototype.extend({
   },
   render: function(input){
     return this._module.propertyRender(input);
+  },
+  super: function(){
+    return this._module.$super != null ? this._module.$super.moduleEventInstance : null;
   }
 });
 

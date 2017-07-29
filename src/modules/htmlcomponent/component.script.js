@@ -10,20 +10,36 @@
 ***/
 module.exports = function(projectLink, moduleId){
   this.onCommunicate = function() {
-    var stylesheetModule = this.link.getProperty("__global__stylesheet");
     var cssContent = this.link.getProperty("css");
+    this.addCSS(cssContent);
 
-    if(stylesheetModule != null && cssContent != null) {      
-      var cssOutputContent = this.link.render(cssContent);
-      this.link.getModule(stylesheetModule).addCSS(cssOutputContent);
-    }
-
-    var scriptModule = this.link.getProperty("__global__script");
     var scriptContent = this.link.getProperty("js");
+    this.addJS(scriptContent);
+  };
 
-    if(scriptModule != null && scriptContent != null){
+  this.addCSS = function(content) {
+    var stylesheetModule = this.link.getProperty("__global__stylesheet");
+
+    this.addCSSToModule(this.link.getModule(stylesheetModule), content);
+  };
+
+  this.addJS = function(content) {
+    var scriptModule = this.link.getProperty("__global__script");
+
+    this.addJSToModule(this.link.getModule(scriptModule), content);
+  };
+
+  this.addCSSToModule = function(m, cssContent) {
+    if(m != null && cssContent != null && typeof m.addCSS === "function") {
+      var cssOutputContent = this.link.render(cssContent);
+      m.addCSS(cssOutputContent);
+    }
+  };
+
+  this.addJSToModule = function(m, scriptContent) {
+    if(m != null && scriptContent != null && typeof m.addJS === "function") {
       var scriptOutputContent = this.link.render(scriptContent);
-      this.link.getModule(scriptModule).addJS(scriptOutputContent);
+      m.addJS(scriptOutputContent);
     }
   };
 

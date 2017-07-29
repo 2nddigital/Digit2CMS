@@ -2,8 +2,9 @@
   "name": "2nddigital-navbar",
   "content": "navbar.data",
   "extends": "htmlcomponent",
+  "script": "navbar.script.js",
   "properties": [
-    
+
   ],
   "containers": []
 }
