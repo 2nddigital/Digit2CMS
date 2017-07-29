@@ -1,7 +1,21 @@
-var _core = module.parent.exports;
 var _path = require("path");
 var _fs = require("fs");
 var _async = require('async');
+
+var propertyTemplate = {
+  "name": null,
+  "type": null,
+  "value": null,
+  "readonly": false,
+  "inherited": false
+};
+
+var moduleTemplate = {
+  "module": "",
+  "properties": [],
+  "child_containers": [],
+  "children": {}
+};
 
 function Module(moduleObject, moduleName){
   var extendedModuleObject = {
@@ -18,6 +32,7 @@ function Module(moduleObject, moduleName){
   this.properties = {};
   this.propertylist = [];
   this.name = moduleName;
+  this.title = extendedModuleObject.title;
   this.$super = null;
   this.$parentContainer = null;
   this.content = null;
@@ -29,13 +44,7 @@ function Module(moduleObject, moduleName){
 
   extendedModuleObject.properties.forEach(function(elem){
     self.propertylist.push(elem.name);
-    self.properties[elem.name] = {
-      "name": null,
-      "type": null,
-      "value": null,
-      "readonly": false,
-      "inherited": false
-    }.extend(elem);
+    self.properties[elem.name] = propertyTemplate.safeExtend(elem);
   });
 
   //Load inherited module
@@ -89,7 +98,7 @@ Module.prototype.initialize = function(id, projectLink){
   }
   if(typeof(this.script) === 'function'){
     this.moduleEventInstance = new this.script(projectLink, id);
-  }else{
+  } else {
     this.moduleEventInstance = new module.parent.exports.DefaultModule(projectLink, id);
   }
   this.moduleEventInstance.link = projectLink;
@@ -110,18 +119,17 @@ Module.prototype.getContainers = function(){
   return clist;
 };
 
+Module.prototype.remove = function(){
+  this.$parentContainer.removeModule(this);
+};
+
 Module.prototype.initializeProperties = function(properties){
   var self = this;
   properties.forEach(function(property){
     if(typeof(self.properties[property.name]) !== 'undefined'){
       self.properties[property.name].extend(property);
     }else{
-      self.properties[property.name] = {
-        "name": null,
-        "type": null,
-        "value": null,
-        "readonly": false
-      }.extend(property);
+      self.properties[property.name] = propertyTemplate.safeExtend(property);
       self.propertylist.push(property.name);
     }
   });
@@ -141,12 +149,7 @@ Module.prototype.createChild = function(containerId, childProperties){
   if(typeof(childProperties) !== 'object'){
     childProperties = {};
   }
-  var extendedChildProperties = {
-    "module": "",
-    "properties": [],
-    "child_containers": [],
-    "children": {}
-  }.extend(childProperties);
+  var extendedChildProperties = moduleTemplate.safeExtend(childProperties);
 
   var modulePath = _path.resolve(__dirname, "..", "modules", extendedChildProperties.module, "module.json");
 
@@ -212,12 +215,12 @@ Module.prototype.exportProperties = function(){
 Module.prototype.export = function(parentId){
   var self = this;
   var containers = self.getContainers();
-  return {
+  return moduleTemplate.safeExtend({
     "module": self.name,
     "child_containers": containers,
     "children": self.exportContainers(containers, parentId),
     "properties": self.exportProperties()
-  };
+  });
 };
 
 Module.prototype.propertyLookup = function(propertyName){
@@ -264,12 +267,7 @@ Module.prototype.propertySet = function(propertyName, propertyValue){
 };
 
 Module.prototype.localPropertySet = function(propertyName, propertyData){
-  this.properties[propertyName] = {
-    "name": null,
-    "type": null,
-    "value": null,
-    "readonly": false
-  }.extend(propertyData);
+  this.properties[propertyName] = propertyTemplate.safeExtend(propertyData);
   return true;
 };
 
@@ -322,6 +320,16 @@ Module.prototype.preRenderContent = function(content){
   return renderInput;
 };
 
+Module.prototype.communicate = function() {
+  if(this.$super != null){
+    this.$super.communicate();
+  }
+
+  if(this.moduleEventInstance !== null && typeof(this.moduleEventInstance.onCommunicate) === 'function'){
+    this.moduleEventInstance.onCommunicate();
+  }
+};
+
 Module.prototype.postRenderContent = function(content){
   var self = this;
   var renderInput = content;
@@ -339,22 +347,34 @@ Module.prototype.postRenderContent = function(content){
   return renderInput;
 };
 
-Module.prototype.render = function(){
+Module.prototype.propertyRender = function(input) {
   var self = this;
-  var renderInput = this.getContent();
-
-  renderInput = this.preRenderContent(renderInput);
-
-  var sysRenderOutput = renderInput.replace(/{(\S+)}/g, function(totalMatch, property){
+  
+  return input.replace(/{([A-Za-z0-9-_]+)}/g, function(totalMatch, property) {
     var foundProperty = self.propertyLookup(property);
     return foundProperty !== null ? foundProperty.value : "";
-  }).replace(/\/\/(\S+)\\\\/g, function(totalMatch, container){
+  });
+};
+
+Module.prototype.containerRender = function(input) {
+  var self = this;
+
+  return input.replace(/\[\[([A-Za-z0-9-_]+)\]\]/g, function(totalMatch, container) {
     if(typeof(self.containers[container]) !== 'undefined' && self.containers[container] !== null){
       return self.containers[container].render();
     }else{
       return "";
     }
   });
+};
+
+Module.prototype.render = function(){
+  var self = this;
+  var renderInput = this.getContent();
+
+  renderInput = this.preRenderContent(renderInput);
+
+  var sysRenderOutput = this.containerRender(this.propertyRender(renderInput));
 
   sysRenderOutput = this.postRenderContent(sysRenderOutput);
 
@@ -375,8 +395,6 @@ Module.create = function(moduleName){
   if(!fsStat.isFile()){
     return null;
   }
-
-  console.log(modulePath);
 
   var moduleObject = require(modulePath);
 

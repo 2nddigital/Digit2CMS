@@ -1,4 +1,4 @@
 <li class="module-listitem" height="{height}">
 <img src="{image}" alt="{description}" />
-<span class="module-listitem-content">//content\\</span>
+<span class="module-listitem-content">[[content]]</span>
 </li>

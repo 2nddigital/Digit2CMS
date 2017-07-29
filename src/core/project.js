@@ -45,7 +45,7 @@ Project.prototype.buildSubtree = function(moduleId){
     "child_containers": [],
     "children": {}
   }.extend(this.projectData[moduleId]);
- 
+
   var currentNode = module.parent.exports.Module.create(moduleSettings.module);
   if(currentNode !== null){
     currentNode.initializeProperties(moduleSettings.properties);
@@ -67,16 +67,14 @@ Project.prototype.buildSubtree = function(moduleId){
         console.log("something wrong?");
       }
     });
-  }  
+  }
 
   return currentNode;
 };
 
 Project.prototype.communicate = function(){
   this.walkSubtree(function(module, id){
-    if(module.moduleEventInstance !== null && typeof(module.moduleEventInstance.onCommunicate) === 'function'){
-      module.moduleEventInstance.onCommunicate();
-    }
+    module.communicate();
   });
 };
 

@@ -15,5 +15,6 @@ module.exports = function(projectLink, moduleId){
   this.onCommunicate = function(){
 
   };
+  
   return this;
 };

@@ -13,7 +13,7 @@
       "readonly": true
     },
     {
-      "name": "script",
+      "name": "code",
       "type": "string"
     }
   ],

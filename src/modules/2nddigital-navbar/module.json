@@ -1,6 +1,9 @@
 {
   "name": "2nddigital-navbar",
   "content": "navbar.data",
-  "properties": [],
+  "extends": "htmlcomponent",
+  "properties": [
+    
+  ],
   "containers": []
 }

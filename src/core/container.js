@@ -1,4 +1,3 @@
-var _core = module.parent.exports;
 var _async = require('async');
 
 function Container(containerObject, parentModule){
@@ -7,7 +6,6 @@ function Container(containerObject, parentModule){
   }
   var self = this;
   this.$parentModule = parentModule;
-  this.Module = require("./module.js");
   this.containerProperties = {
     "id": null,
     "supports": null,
@@ -17,8 +15,8 @@ function Container(containerObject, parentModule){
   return this;
 }
 
-Container.prototype.isSupportedModule = function(module){
-  if(module instanceof this.Module){
+Container.prototype.isSupportedModule = function(mod){
+  if(mod instanceof module.parent.exports.Module){
     if(this.containerProperties.supports === null || this.containerProperties.supports === "all"){
       return true;
     }else if(Array.isArray(this.containerProperties.supports)){
@@ -26,7 +24,7 @@ Container.prototype.isSupportedModule = function(module){
         return true;
       }
       for(var i = 0; i < this.containerProperties.supports; i++){
-        if(module.isType(this.containerProperties.supports[i]) === true){
+        if(mod.isType(this.containerProperties.supports[i]) === true){
           return true;
         }
       }
@@ -84,11 +82,19 @@ Container.prototype.getSubtreeByPath = function(pathList){
 };
 
 Container.prototype.getId = function(mod){
-  if(mod instanceof this.Module){
+  if(mod instanceof module.parent.exports.Module){
     return this.modules.indexOf(mod);
   }
   return null;
 };
+
+Container.prototype.removeModule = function(mod){
+  var index = mod;
+  if(mod instanceof module.parent.exports.Module){
+    index = this.getId(mod);
+  }
+  this.modules.splice(index, 1);
+}
 
 Container.prototype.export = function(parentId){
   return this.modules.map(function(module, index){

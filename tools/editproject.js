@@ -17,11 +17,11 @@ if(project == null) throw "invalid project";
 project.initializeTree();
 project.initializeModules();
 
-if(cmd == "addchild" || cmd == "removechild"){
+if(cmd == "addchild" || cmd == "removechild" || cmd == "addmodule" || cmd == "removemodule"){
     var modulePath = process.argv.shift();
     var subtree = project.getSubtreeByPath(modulePath);
 
-    if(cmd == "addchild"){
+    if(cmd == "addchild" || cmd == "addmodule"){
         var container = process.argv.shift();
         var module = process.argv.shift();
 
@@ -32,13 +32,19 @@ if(cmd == "addchild" || cmd == "removechild"){
         subtree.createChild(container, moduleProperties);
     }
 
-    if(cmd == "removechild"){
-
+    if(cmd == "removechild" || cmd == "removemodule"){
+        subtree.remove();
     }
 }
 
 if(cmd == "update"){
 
+}
+
+if(cmd == "stats" || cmd == "info"){
+    project.walkSubtree(function(module, id){
+      console.log(id + ": " + module.name);
+    });
 }
 
 var exportProjectData = JSON.stringify(project.export(), null, 2);
@@ -55,6 +61,12 @@ if(cmd == "compress"){
 
 if(exportProjectData != null && exportProjectData.length > 0){
     fs.writeFile(projectpath, exportProjectData);
+}
+
+
+if(cmd == "render" || cmd == "build"){
+    project.communicate();
+    project.render();
 }
 
 

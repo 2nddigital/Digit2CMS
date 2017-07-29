@@ -1,0 +1,15 @@
+{
+  "name": "stylesheet",
+  "content": "stylesheet.data",
+  "script": "stylesheet.script.js",
+  "properties": [
+
+  ],
+  "containers": [
+    {
+      "id": "content",
+      "supports": "text",
+      "size": 0
+    }
+  ]
+}

@@ -30,6 +30,9 @@ ProjectLink.prototype.extend({
   },
   isType: function(type){
     return this._module.isType(type);
+  },
+  render: function(input){
+    return this._module.propertyRender(input);
   }
 });
 

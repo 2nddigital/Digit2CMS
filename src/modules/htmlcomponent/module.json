@@ -1,0 +1,13 @@
+{
+  "name": "htmlcomponent",
+  "content": "component.data",
+  "script": "component.script.js",
+  "properties": [
+    {
+      "name": "css",
+      "type": "string"
+    }
+  ],
+  "containers": [
+  ]
+}
