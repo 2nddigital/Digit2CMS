@@ -1,6 +1,6 @@
 <!-- Start: Navbar Area
   ============================= -->
-  <header id="header" class="okayNav-header navbar-fixed-top main-navbar-top id-{__id__}">
+  <header id="id-{__id__}" class="okayNav-header navbar-fixed-top main-navbar-top module-{__module__}">
     <div class="container">
       <div class="row">
 

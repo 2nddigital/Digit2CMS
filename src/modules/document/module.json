@@ -1,6 +1,8 @@
 {
   "name": "document",
   "content": "document.data",
+  "extends": "htmlmodule",
+  "script": "document.script.js",
   "properties": [
     {
       "name": "lang",
@@ -14,12 +16,12 @@
   "containers": [
     {
       "id": "head",
-      "supports": null,
+      "supports": "htmlmodule",
       "size": 0
     },
     {
       "id": "body",
-      "supports": null,
+      "supports": "htmlcomponent",
       "size": 0
     },
     {

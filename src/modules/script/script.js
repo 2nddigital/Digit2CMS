@@ -17,5 +17,9 @@ module.exports = function(projectLink, moduleId){
     txtJsModule.setProperty("content", src);
   };
 
+  this.scriptDecorator = function(input){
+    return input + "\n";
+  };
+
   return this;
 };

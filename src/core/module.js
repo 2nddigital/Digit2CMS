@@ -32,7 +32,6 @@ function Module(moduleObject, moduleName){
   this.properties = {};
   this.propertylist = [];
   this.name = moduleName;
-  this.title = extendedModuleObject.title;
   this.$super = null;
   this.$parentContainer = null;
   this.content = null;
@@ -252,13 +251,18 @@ Module.prototype.localPropertyLookup = function(propertyName){
       value: this.moduleEventInstance._id,
       type: "module"
     };
+  } else if(propertyName === "__module__") {
+    return {
+      name: "__module__",
+      value: this.name,
+      type: "module"
+    };
   }
 
   var localProperty = this.properties[propertyName];
   return (typeof(localProperty) !== "undefined") ? localProperty : null;
 };
 
-//TODO: local property lookup and set
 Module.prototype.propertySet = function(propertyName, propertyValue){
   var property = this.localPropertyLookup(propertyName);
   if(property !== null && property.inherited === false){

@@ -5,7 +5,7 @@
   "containers": [
     {
       "id": "content",
-      "supports": null,
+      "supports": "htmlmodule",
       "size": 1
     }
   ],

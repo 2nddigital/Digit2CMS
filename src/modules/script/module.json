@@ -2,6 +2,7 @@
   "name": "script",
   "content": "script.data",
   "script": "script.js",
+  "extends": "htmlmodule",
   "properties": [
     {
       "name": "src",
@@ -21,7 +22,8 @@
     {
       "id": "script",
       "supports": "text",
-      "size": 0
+      "size": 0,
+      "decorator": "scriptDecorator"
     }
   ]
 }

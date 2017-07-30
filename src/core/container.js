@@ -9,7 +9,8 @@ function Container(containerObject, parentModule){
   this.containerProperties = {
     "id": null,
     "supports": null,
-    "size": 0
+    "size": 0,
+    "decorator": null
   }.extend(containerObject);
   this.modules = [];
   return this;
@@ -94,7 +95,7 @@ Container.prototype.removeModule = function(mod){
     index = this.getId(mod);
   }
   this.modules.splice(index, 1);
-}
+};
 
 Container.prototype.export = function(parentId){
   return this.modules.map(function(module, index){
@@ -102,10 +103,19 @@ Container.prototype.export = function(parentId){
   });
 };
 
+Container.prototype.decorate = function(input){
+  if(this.containerProperties.decorator != null && typeof this.$parentModule.moduleEventInstance[this.containerProperties.decorator] === "function"){
+    input = this.$parentModule.moduleEventInstance[this.containerProperties.decorator](input);
+  }
+  return input;
+};
+
 Container.prototype.render = function(){
+  var self = this;
+
   var result = "";
   this.modules.forEach(function(module){
-    result += module.render();
+    result += self.decorate(module.render());
   });
   return result;
 };

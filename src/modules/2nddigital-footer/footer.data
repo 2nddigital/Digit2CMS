@@ -1,6 +1,6 @@
 <!-- Start: Footer Section 1
   ================================== -->
-  <footer class="footer-section background-dark" id="footer">
+  <footer class="footer-section background-dark module-{__module__}" id="id-{__id__}">
     <div class="container">
       <div class="row">
 
@@ -40,7 +40,7 @@
                 <li><a href="callto:18562361853">Bel ons: 06 3108 6074</a></li>
                 <li><a href="mailto:info@2nddigital.nl">info@2nddigital.nl</a></li>
               </ul>
-              
+
               <ul class="nav">
                 <li>
                   <div class="li-inner">

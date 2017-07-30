@@ -7,13 +7,14 @@
 * requires global properties:
 * __global__stylesheet
 * __global__script
+* __global__document
 ***/
 module.exports = function(projectLink, moduleId){
   this.onCommunicate = function() {
-    var cssContent = this.link.getProperty("css");
+    var cssContent = this.link.getPropertyDefault("css");
     this.addCSS(cssContent);
 
-    var scriptContent = this.link.getProperty("js");
+    var scriptContent = this.link.getPropertyDefault("js");
     this.addJS(scriptContent);
   };
 
@@ -27,6 +28,18 @@ module.exports = function(projectLink, moduleId){
     var scriptModule = this.link.getProperty("__global__script");
 
     this.addJSToModule(this.link.getModule(scriptModule), content);
+  };
+
+  this.addJSFile = function(file){
+    var documentModule = this.link.getProperty("__global__document");
+
+    if(documentModule != null && typeof documentModule.addJSFile === "function"){
+      documentModule.addJSFile(file);
+    }
+  };
+
+  this.addCSSFile = function(file){
+
   };
 
   this.addCSSToModule = function(m, cssContent) {

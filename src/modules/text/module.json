@@ -1,6 +1,7 @@
 {
   "name": "text",
   "content": "text.data",
+  "extends": "component",
   "properties": [
     {
       "name": "content",

@@ -2,6 +2,7 @@
   "name": "stylesheet",
   "content": "stylesheet.data",
   "script": "stylesheet.script.js",
+  "extends": "htmlmodule",
   "properties": [
 
   ],

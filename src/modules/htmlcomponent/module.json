@@ -2,6 +2,7 @@
   "name": "htmlcomponent",
   "content": "component.data",
   "script": "component.script.js",
+  "extends": "htmlmodule",
   "properties": [
     {
       "name": "css",

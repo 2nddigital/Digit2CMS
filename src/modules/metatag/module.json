@@ -2,6 +2,7 @@
   "name": "metatag",
   "content": "meta.data",
   "script": "meta.js",
+  "extends": "htmlmodule",
   "properties": [
   	{
   		"name": "name",
