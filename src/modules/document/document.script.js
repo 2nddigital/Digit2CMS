@@ -8,7 +8,17 @@
 ***/
 module.exports = function(projectLink, moduleId){
   this.addJSFile = function(file){
+    var scriptModule = this.link.createModule("script", {
+      module: "script"
+    }).link;
+    scriptModule.setProperty("src", file);
+  };
 
+  this.addCSSFile = function(file){
+    var cssLinkModule = this.link.createModule("head", {
+      module: "metalink"
+    }).link;
+    cssLinkModule.setProperty("href", file);
   };
 
   return this;

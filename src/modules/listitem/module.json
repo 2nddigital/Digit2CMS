@@ -4,22 +4,6 @@
   "content": "listitem.data",
   "extends": "htmlcomponent",
   "properties": [
-    {
-      "name": "image",
-      "type": "url"
-    },
-    {
-      "name": "items",
-      "type": "number"
-    },
-    {
-      "name": "description",
-      "type": "inline-text"
-    },
-    {
-      "name": "height",
-      "type": "dimension"
-    }
   ],
   "containers": [
     {

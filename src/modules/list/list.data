@@ -1,1 +1,1 @@
-<ul class="module-list">[[content]]</ul>
+<ul class="module-{__module__}" id="id-{__id__}">[[content]]</ul>

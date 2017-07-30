@@ -150,19 +150,24 @@ Module.prototype.createChild = function(containerId, childProperties){
   }
   var extendedChildProperties = moduleTemplate.safeExtend(childProperties);
 
-  var modulePath = _path.resolve(__dirname, "..", "modules", extendedChildProperties.module, "module.json");
+  //var modulePath = _path.resolve(module.parent.exports.Root, "..", "modules", extendedChildProperties.module, "module.json");
 
   if(typeof(this.containers[containerId]) !== 'undefined' && (this.containers[containerId] instanceof module.parent.exports.Container)){
-    var initialProperties = this.propertylist.map(function(propertyName){
-      return self.properties[propertyName];
-    });
+    // var initialProperties = this.propertylist.map(function(propertyName){
+    //   return self.properties[propertyName];
+    // });
+    //
+    // var moduleObject = require(modulePath);
+    // var newModule = new Module(moduleObject, extendedChildProperties.module);
+    // newModule.initializeProperties(initialProperties, true);
+    // newModule.initializeProperties(extendedChildProperties.properties);
+    //
+    // this.addChild(containerId, newModule);
 
-    var moduleObject = require(modulePath);
-    var newModule = new Module(moduleObject, extendedChildProperties.module);
-    newModule.initializeProperties(initialProperties, true);
-    newModule.initializeProperties(extendedChildProperties.properties);
+    var newModule = Module.create(extendedChildProperties.module);
 
     this.addChild(containerId, newModule);
+
     return newModule;
   }else{
     return null;

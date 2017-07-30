@@ -1,4 +1,1 @@
-<li class="module-listitem" height="{height}">
-<img src="{image}" alt="{description}" />
-<span class="module-listitem-content">[[content]]</span>
-</li>
+<li class="module-{__module__}" id="id-{__id__}">[[content]]</li>

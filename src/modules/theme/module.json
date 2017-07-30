@@ -1,0 +1,13 @@
+{
+  "name": "theme",
+  "content": "theme.data",
+  "script": "theme.script.js",
+  "extends": "htmlcomponent",
+  "properties": [
+    {
+      "name": "css_files",
+      "type": null
+    }
+  ],
+  "containers": []
+}

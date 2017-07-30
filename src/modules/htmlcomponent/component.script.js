@@ -31,7 +31,7 @@ module.exports = function(projectLink, moduleId){
   };
 
   this.addJSFile = function(file){
-    var documentModule = this.link.getProperty("__global__document");
+    var documentModule = this.link.getModule(this.link.getProperty("__global__document"));
 
     if(documentModule != null && typeof documentModule.addJSFile === "function"){
       documentModule.addJSFile(file);
@@ -39,7 +39,11 @@ module.exports = function(projectLink, moduleId){
   };
 
   this.addCSSFile = function(file){
+    var documentModule = this.link.getModule(this.link.getProperty("__global__document"));
 
+    if(documentModule != null && typeof documentModule.addJSFile === "function"){
+      documentModule.addCSSFile(file);
+    }
   };
 
   this.addCSSToModule = function(m, cssContent) {

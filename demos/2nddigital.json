@@ -5,7 +5,7 @@
       {
         "name": "filename",
         "type": "string",
-        "value": "home.html",
+        "value": "D:\\digit2-2nddigital-out\\index.html",
         "readonly": false,
         "inherited": false
       },
@@ -74,7 +74,14 @@
       "head": [
         "0-content-0-head-0",
         "0-content-0-head-1",
-        "0-content-0-head-2"
+        "0-content-0-head-2",
+        "0-content-0-head-3",
+        "0-content-0-head-4",
+        "0-content-0-head-5",
+        "0-content-0-head-6",
+        "0-content-0-head-7",
+        "0-content-0-head-8",
+        "0-content-0-head-9"
       ],
       "body": [
         "0-content-0-body-0",
@@ -162,20 +169,6 @@
         "value": null,
         "readonly": true,
         "inherited": false
-      },
-      {
-        "name": "lang",
-        "type": "string",
-        "value": null,
-        "readonly": false,
-        "inherited": false
-      },
-      {
-        "name": "bodyclass",
-        "type": "classlist",
-        "value": null,
-        "readonly": false,
-        "inherited": false
       }
     ],
     "child_containers": [],
@@ -253,20 +246,6 @@
         "value": null,
         "readonly": true,
         "inherited": false
-      },
-      {
-        "name": "lang",
-        "type": "string",
-        "value": null,
-        "readonly": false,
-        "inherited": false
-      },
-      {
-        "name": "bodyclass",
-        "type": "classlist",
-        "value": null,
-        "readonly": false,
-        "inherited": false
       }
     ],
     "child_containers": [],
@@ -274,28 +253,156 @@
   },
   "0-content-0-head-2": {
     "module": "stylesheet",
-    "properties": [
-      {
-        "name": "lang",
-        "type": "string",
-        "value": null,
-        "readonly": false,
-        "inherited": false
-      },
-      {
-        "name": "bodyclass",
-        "type": "classlist",
-        "value": null,
-        "readonly": false,
-        "inherited": false
-      }
-    ],
+    "properties": [],
     "child_containers": [
       "content"
     ],
     "children": {
       "content": []
     }
+  },
+  "0-content-0-head-3": {
+    "module": "metalink",
+    "properties": [
+      {
+        "name": "rel",
+        "type": "string",
+        "value": "stylesheet",
+        "readonly": false,
+        "inherited": false
+      },
+      {
+        "name": "href",
+        "type": "url",
+        "value": "bootstrap/css/bootstrap.min.css",
+        "readonly": false,
+        "inherited": false
+      }
+    ],
+    "child_containers": [],
+    "children": {}
+  },
+  "0-content-0-head-4": {
+    "module": "metalink",
+    "properties": [
+      {
+        "name": "rel",
+        "type": "string",
+        "value": "stylesheet",
+        "readonly": false,
+        "inherited": false
+      },
+      {
+        "name": "href",
+        "type": "url",
+        "value": "css/plagin-css/plagin.css",
+        "readonly": false,
+        "inherited": false
+      }
+    ],
+    "child_containers": [],
+    "children": {}
+  },
+  "0-content-0-head-5": {
+    "module": "metalink",
+    "properties": [
+      {
+        "name": "rel",
+        "type": "string",
+        "value": "stylesheet",
+        "readonly": false,
+        "inherited": false
+      },
+      {
+        "name": "href",
+        "type": "url",
+        "value": "icons/toicons/css/styles.css",
+        "readonly": false,
+        "inherited": false
+      }
+    ],
+    "child_containers": [],
+    "children": {}
+  },
+  "0-content-0-head-6": {
+    "module": "metalink",
+    "properties": [
+      {
+        "name": "rel",
+        "type": "string",
+        "value": "stylesheet",
+        "readonly": false,
+        "inherited": false
+      },
+      {
+        "name": "href",
+        "type": "url",
+        "value": "css/style.css",
+        "readonly": false,
+        "inherited": false
+      }
+    ],
+    "child_containers": [],
+    "children": {}
+  },
+  "0-content-0-head-7": {
+    "module": "metalink",
+    "properties": [
+      {
+        "name": "rel",
+        "type": "string",
+        "value": "stylesheet",
+        "readonly": false,
+        "inherited": false
+      },
+      {
+        "name": "href",
+        "type": "url",
+        "value": "css/responsive.css",
+        "readonly": false,
+        "inherited": false
+      }
+    ],
+    "child_containers": [],
+    "children": {}
+  },
+  "0-content-0-head-8": {
+    "module": "metalink",
+    "properties": [
+      {
+        "name": "rel",
+        "type": "string",
+        "value": "stylesheet",
+        "readonly": false,
+        "inherited": false
+      },
+      {
+        "name": "href",
+        "type": "url",
+        "value": "plugins/scrollingtext/css/style.css",
+        "readonly": false,
+        "inherited": false
+      }
+    ],
+    "child_containers": [],
+    "children": {}
+  },
+  "0-content-0-head-9": {
+    "module": "theme",
+    "properties": [
+      {
+        "name": "css_files",
+        "type": null,
+        "value": [
+          "file1",
+          "file2"
+        ],
+        "readonly": false,
+        "inherited": false
+      }
+    ],
+    "child_containers": [],
+    "children": {}
   },
   "0-content-0-body-0": {
     "module": "2nddigital-navbar",

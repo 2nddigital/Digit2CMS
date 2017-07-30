@@ -1,0 +1,16 @@
+{
+  "name": "metalink",
+  "content": "link.data",
+  "extends": "htmlmodule",
+  "properties": [
+    {
+      "name": "rel",
+      "type": "string",
+      "value": "stylesheet"
+    },
+    {
+      "name": "href",
+      "type": "url"
+    }
+  ]
+}

@@ -6,6 +6,7 @@
 module.exports = function(projectLink, moduleId){
   this.onPreRender = function(input){
     var srcRw = this.link.getProperty("src");
+
     if(srcRw !== null && srcRw.length > 0){
       this.link.setProperty("rw-src", "src=\"" + srcRw + "\"");
     }

@@ -44,7 +44,7 @@ Project.prototype.buildSubtree = function(moduleId){
     "properties": [],
     "child_containers": [],
     "children": {}
-  }.extend(this.projectData[moduleId]);
+  }.safeExtend(this.projectData[moduleId]);
 
   var currentNode = module.parent.exports.Module.create(moduleSettings.module);
   if(currentNode !== null){
